@@ -1,0 +1,22 @@
+.usertype-container{
+    display: grid;
+    place-items: center;
+    min-height: 500px;
+}
+
+.utb-container{
+    display: grid;
+    grid-template-columns: auto auto;
+}
+
+.type-box{
+    background: #fff;
+    min-width: 285px;
+    border: 1px solid #e7e7e7;
+    margin: 0;
+    line-height: 23px;
+    border-radius: 0;
+    padding: 19px;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
+    cursor: pointer;
+}

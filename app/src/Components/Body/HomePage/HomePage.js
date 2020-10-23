@@ -23,7 +23,7 @@ const HomePage = () => {
                 <div className="category-menu">
                     {categories.map((category) => (
                         <div className="category-name">
-                            <img src={category.image} className="category-name-img" alt="category image"/>
+                            <img src={category.image} className="category-name-img" alt="category"/>
                             <span style={{position:"relative", bottom: 3}}>{category.name}</span>
                         </div>
                     ))}

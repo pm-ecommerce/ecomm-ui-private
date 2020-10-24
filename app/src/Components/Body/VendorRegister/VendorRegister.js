@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./VendorRegister.css";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 
-const url = 'http://localhost:8081/api/vendors';
+const url = 'https://localhost:8081/api/vendors';
 
 const CARD_ELEMENT_OPTIONS = {
   iconStyle: "solid",

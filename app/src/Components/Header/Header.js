@@ -54,7 +54,7 @@ const Header = () => {
             </div>
             <div className="logreg-btn">
                 <i className="fa"></i>
-                <Link to="/usertype" style={{marginLeft: 4}}>Login</Link> or <Link to="/userType">Register</Link>
+                <Link to={{pathname:"/userType", params: {type: 'Login' }}} style={{marginLeft: 4}}>Login</Link> or <Link to={{pathname:"/userType", params: {type: 'Register' }}}>Register</Link>
             </div>
         </header>
     )

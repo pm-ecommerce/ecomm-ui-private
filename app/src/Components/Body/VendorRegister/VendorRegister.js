@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import "./VendorRegister.css";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 
+const url = 'http://localhost:8081/api/vendors';
+
 const CARD_ELEMENT_OPTIONS = {
   iconStyle: "solid",
   hidePostalCode: true,
@@ -41,6 +43,7 @@ const VendorRegister = (props) => {
     city: { error: false, text: "" },
     zipcode: { error: false, text: "" },
     state: { error: false, text: "" },
+    card: { error: false, text: "" },
     password: { error: false, text: "" },
     passwordconfirm: { error: false, text: "" },
   });
@@ -71,6 +74,10 @@ const VendorRegister = (props) => {
     setInputError((prevState) => {
       return { ...prevState, [inputName]: { error: false, text: "" } };
     });
+
+    setInputError((prevState) => {
+      return { ...prevState, card: { error: false, text: "" } };
+    });
   };
 
   const validateInput = (prop, errorText, type) => {
@@ -94,14 +101,9 @@ const VendorRegister = (props) => {
   };
 
   const handleSubmit = async (e) => {
-    props.history.push({
-      pathname: "/paymentsuccess",
-    });
-
     if (!stripe || !elements) return;
     const cardElement = elements.getElement(CardElement);
     const { error, token } = await stripe.createToken(cardElement);
-    console.log(token);
     let err = false;
     if (validateInput("name", "Name can't be Empty!", "isEmpty").error)
       err = true;
@@ -131,7 +133,29 @@ const VendorRegister = (props) => {
       ).error
     )
       err = true;
-    if (err) return;
+    if (error) {
+      setInputError((prevState) => {
+        return { ...prevState, card: { error: true, text: error.message } };
+      });
+    }
+
+    // if (err) return;
+    
+    console.log('Sending Request Please Wait...');
+    fetch(url, {
+      method: "POST", // *GET, POST, PUT, DELETE, etc.
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(vendor)
+    })
+    .then(response => console.log('Response : ',response))
+    .catch(error => console.log('Error : ',error));
+
+    
+    // props.history.push({
+    //   pathname: "/paymentsuccess",
+    // });
   };
 
   return (
@@ -311,10 +335,26 @@ const VendorRegister = (props) => {
       <fieldset id="account">
         <legend>Payment</legend>
         <div className="form-group">
-          <label className="control-label">Card Information</label>
+          <label
+            className={`control-label ${
+              inputError.card.error ? "error-border" : ""
+            }`}
+          >
+            Card Information
+          </label>
           <div className="stripe-input-container">
             <CardSection />
           </div>
+          <span
+            className="error-span"
+            style={{
+              display: inputError.state.error ? "inline" : "none",
+              position: "relative",
+              left: 180,
+            }}
+          >
+            {inputError.card.text}
+          </span>
         </div>
       </fieldset>
       <fieldset id="account">

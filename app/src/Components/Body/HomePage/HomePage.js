@@ -21,8 +21,8 @@ const HomePage = () => {
         <div id="main-page-container">
             <div className="left-column">
                 <div className="category-menu">
-                    {categories.map((category) => (
-                        <div className="category-name">
+                    {categories.map((category,index) => (
+                        <div key={index} className="category-name">
                             <img src={category.image} className="category-name-img" alt="category"/>
                             <span style={{position:"relative", bottom: 3}}>{category.name}</span>
                         </div>

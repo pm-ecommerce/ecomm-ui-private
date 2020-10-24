@@ -7,7 +7,7 @@ const SuccessPage = () => {
     <div className="success-page-container">
       <div className="success-card">
         <div className="success-logo">
-          <img src={Image} />
+          <img src={Image} alt="success" />
         </div>
         <div className="scard-text-container">
           <h3>Payment Successful</h3>

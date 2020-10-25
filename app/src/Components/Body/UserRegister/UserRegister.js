@@ -87,9 +87,9 @@ const UserRegister = (props) => {
     })
       .then((response) => console.log("Response : ", response))
       .catch((error) => console.log("Error : ", error));
-    props.history.push({
-      pathname: "/paymentsuccess",
-    });
+    // props.history.push({
+    //   pathname: "/paymentsuccess",
+    // });
   };
 
   return (

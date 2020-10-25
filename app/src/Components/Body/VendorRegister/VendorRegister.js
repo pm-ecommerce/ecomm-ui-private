@@ -150,24 +150,16 @@ const VendorRegister = (props) => {
       },
       body: JSON.stringify(vendor),
     })
-      .then((response) =>
-        response.json().then((response) => {
-          console.log(response);
-          if (response.status === 200) {
-            fetch(`http://localhost:8080/api/card/${response.data.id}`, {
-              method: "POST", // *GET, POST, PUT, DELETE, etc.
-            })
-              .then((res) => {
-                console.log(res);
-                // props.history.push({
-                //   pathname: "/paymentsuccess",
-                // });
-              })
-              .catch((err) => console.log("Err : ", err));
-          }
-        })
-      )
+      .then((response) => response.json())
+      .then((response) => {
+        console.log(response);
 
+        return fetch(`http://localhost:8080/api/card/${response.data.id}`, {
+          method: "POST", // *GET, POST, PUT, DELETE, etc.
+        });
+      })
+      .then((response) => response.json())
+      .then((response) => console.log(response))
       .catch((error) => console.log("Error : ", error));
   };
 

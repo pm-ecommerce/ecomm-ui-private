@@ -6,7 +6,7 @@ import Body from "./Components/Body/Main";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 
-const stripePromise = loadStripe("pk_test_51HfWSjLIEKOZlioqQbdf9QWr2N4T9qRkuqhU4cWcUT2kFJI1gHuwxGwlrLP41qnLVCMDHF1l7J3ZZIaDap9DhXtv00znGjZQYl");
+const stripePromise = loadStripe("sk_test_51HfWSjLIEKOZlioqUhvNCD8NsAHgoe7zKES0ki8JYwXATcBuHUDgw8XTV96TmrFN8Z0IJnvrJ9pttxOZbaYboA2T00yp29ot3E");
 
 function App() {
   return (

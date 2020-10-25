@@ -152,10 +152,20 @@ const VendorRegister = (props) => {
     })
       .then((response) => {
         console.log("Response : ", response);
-        if(response.status === 200)
-          props.history.push({
-            pathname: "/paymentsuccess",
-          });
+        if(response.status === 200) {
+          fetch(`http://localhost:8081/api/card/${response.data.id}`, {
+            method: "POST" // *GET, POST, PUT, DELETE, etc.
+            // headers: {
+            //   "Content-Type": "application/json",
+            // }
+          }).then((res) => {
+            console.log(res);
+            // props.history.push({
+            //   pathname: "/paymentsuccess",
+            // });
+          })
+          .catch((err) => console.log("Err : ", err))
+        } 
       })
       .catch((error) => console.log("Error : ", error));
   };

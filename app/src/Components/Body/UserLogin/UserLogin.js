@@ -51,9 +51,9 @@ const UserLogin = () => {
             <div className="form-group">
               <label
                 className="control-label optional"
-                style={{ paddingLeft: 5, paddingBottom: 4 }}
+                style={{ paddingLeft: 16, paddingBottom: 4, textAlign: "left" }}
               >
-                E-Mail Address
+                Password
               </label>
               <div className="form-text-input-login">
                 <input className="form-control"></input>

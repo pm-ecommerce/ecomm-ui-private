@@ -41,7 +41,7 @@ const VendorLogin = () => {
               </div>
             </div>
             <div className="form-group">
-              <label className="control-label optional" style={{paddingLeft: 5, paddingBottom: 4}}>E-Mail Address</label>
+              <label className="control-label optional" style={{paddingLeft: 5, paddingBottom: 4}}>Password</label>
               <div className="form-text-input-login">
                 <input className="form-control"></input>
               </div>

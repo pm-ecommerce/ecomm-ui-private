@@ -160,11 +160,11 @@ const VendorRegister = (props) => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            id: token.id,
+            token: token.id,
             brand: token.card.brand,
             exp_month: token.card.exp_month,
             exp_year: token.card.exp_year,
-            id: token.card.id, // card id
+            cardId: token.card.id, // card id
             last4: token.card.last4,
             livemode: false,
           }),

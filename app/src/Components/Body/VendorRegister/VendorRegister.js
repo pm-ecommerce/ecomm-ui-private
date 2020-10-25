@@ -176,6 +176,7 @@ const VendorRegister = (props) => {
       .then((response) => response.json())
       .then((response) => {
         console.log('IDS : ', accountId, cardId);
+        cardId = response.data.id;
         return fetch(`http://localhost:8080/api/card/${accountId}/${cardId}/${amount}`, {
           method: "GET",
           headers: {

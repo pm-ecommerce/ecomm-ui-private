@@ -2,14 +2,29 @@ import React, { useState } from "react";
 import "./UserLogin.css";
 import { Link } from "react-router-dom";
 
-const url = "http://localhost:8081/api/users/";
+const url = "http://localhost:8081/api/users/login";
 
 const UserLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const onSubmit = () => {
-    // fetch()
+    console.log("Sending Request Please Wait...");
+    fetch(url, {
+      method: "POST", // *GET, POST, PUT, DELETE, etc.
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password
+      })
+    })
+    .then(response => response.json())
+    .then(response => {
+      console.log(response);
+    })
+    .catch(err => console.log(err));
   }
 
   return (

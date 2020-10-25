@@ -10,9 +10,10 @@ const SuccessPage = () => {
           <img src={Image} alt="success" />
         </div>
         <div className="scard-text-container">
-          <h3>Payment Successful</h3>
+          <h3>Thank you</h3>
           <p>
-            Your payment was successful! You can now continue using our System
+            We have received your request to partner with us. We will review
+            your information and get back to you in 24 hours.
           </p>
         </div>
       </div>

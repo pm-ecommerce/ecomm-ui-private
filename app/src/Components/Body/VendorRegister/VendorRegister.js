@@ -154,7 +154,7 @@ const VendorRegister = (props) => {
       .then((response) => {
         console.log(response);
         if(response.status === 200) {
-          fetch(`http://localhost:8081/api/card/${response.data.id}`, {
+          fetch(`http://localhost:8080/api/card/${response.data.id}`, {
             method: "POST" // *GET, POST, PUT, DELETE, etc.
             // headers: {
             //   "Content-Type": "application/json",

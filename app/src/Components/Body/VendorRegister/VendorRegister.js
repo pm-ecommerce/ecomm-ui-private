@@ -140,7 +140,7 @@ const VendorRegister = (props) => {
       });
     }
 
-    if (err) return;
+    // if (err) return;
 
     console.log("Sending Request Please Wait...");
     fetch(url, {
@@ -152,9 +152,10 @@ const VendorRegister = (props) => {
     })
       .then((response) => {
         console.log("Response : ", response);
-        props.history.push({
-          pathname: "/paymentsuccess",
-        });
+        if(response.status === 200)
+          props.history.push({
+            pathname: "/paymentsuccess",
+          });
       })
       .catch((error) => console.log("Error : ", error));
   };

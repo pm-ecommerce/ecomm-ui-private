@@ -75,7 +75,7 @@ const UserRegister = (props) => {
       ).error
     )
       err = true;
-    if (err) return;
+    // if (err) return;
 
     console.log("Sending Request Please Wait...");
     fetch(url, {

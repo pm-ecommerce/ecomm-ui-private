@@ -3,7 +3,7 @@ import "./VendorRegister.css";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 
 const url = "http://localhost:8081/api/vendors";
-const amount = 25000;
+const amount = 25000.00;
 
 const CARD_ELEMENT_OPTIONS = {
   iconStyle: "solid",
@@ -175,9 +175,9 @@ const VendorRegister = (props) => {
       })
       .then((response) => response.json())
       .then((response) => {
-        console.log('IDS : ', accountId, cardId);
         cardId = response.data.id;
-        return fetch(`http://localhost:8080/api/card/${accountId}/${cardId}/${Number(amount)}`, {
+        console.log('IDS : ', accountId, cardId);
+        return fetch(`http://localhost:8080/api/card/${accountId}/${cardId}/${amount}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

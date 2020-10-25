@@ -144,7 +144,7 @@ const VendorRegister = (props) => {
 
     console.log("Sending Request Please Wait...");
     fetch(url, {
-      method: "POST", // *GET, POST, PUT, DELETE, etc.
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
@@ -155,7 +155,11 @@ const VendorRegister = (props) => {
         console.log(response);
 
         return fetch(`http://localhost:8080/api/card/${response.data.id}`, {
-          method: "POST", // *GET, POST, PUT, DELETE, etc.
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: ""
         });
       })
       .then((response) => response.json())

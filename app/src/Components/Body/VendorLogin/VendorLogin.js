@@ -1,14 +1,29 @@
 import React, { useState } from "react";
 import "./VendorLogin.css";
 import { Link } from "react-router-dom";
+const url = "http://localhost:8081/api/vendors/login";
 
 const VendorLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const onSubmit = () => {
-    console.log(email, password);
-    // fetch()
+    console.log("Sending Request Please Wait...");
+    fetch(url, {
+      method: "POST", // *GET, POST, PUT, DELETE, etc.
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password
+      })
+    })
+    .then(response => response.json())
+    .then(response => {
+      console.log(response);
+    })
+    .catch(err => console.log(err));
   }
   return (
     <div className="login-page-container">

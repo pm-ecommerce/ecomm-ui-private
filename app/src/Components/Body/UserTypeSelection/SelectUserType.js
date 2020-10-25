@@ -10,8 +10,8 @@ const SelectUserType = (props) => {
         ? "If you already have an account with us, please login at the login page."
         : "New here? Please register at the register page.",
     link: {
-      customer: type === "Register" ? "cregister" : "",
-      vendor: type === "Register" ? "vregister" : ""
+      customer: type === "Register" ? "cregister" : "clogin",
+      vendor: type === "Register" ? "vregister" : "vlogin"
     }
   };
   return (

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./VendorRegister.css";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 
-const url = 'https://localhost:8081/api/vendors';
+const url = "http://localhost:8081/api/vendors";
 
 const CARD_ELEMENT_OPTIONS = {
   iconStyle: "solid",
@@ -36,7 +36,7 @@ const VendorRegister = (props) => {
   const elements = useElements();
   const [inputError, setInputError] = useState({
     name: { error: false, text: "" },
-    businessname: { error: false, text: "" },
+    businessName: { error: false, text: "" },
     email: { error: false, text: "" },
     address1: { error: false, text: "" },
     address2: { error: false, text: "" },
@@ -45,12 +45,12 @@ const VendorRegister = (props) => {
     state: { error: false, text: "" },
     card: { error: false, text: "" },
     password: { error: false, text: "" },
-    passwordconfirm: { error: false, text: "" },
+    passwordConfirmation: { error: false, text: "" },
   });
 
   const [vendor, setVendor] = useState({
     name: "",
-    businessname: "",
+    businessName: "",
     email: "",
     address1: "",
     address2: "",
@@ -58,7 +58,7 @@ const VendorRegister = (props) => {
     zipcode: "",
     state: "",
     password: "",
-    passwordconfirm: "",
+    passwordConfirmation: "",
   });
 
   const onChange = (e) => {
@@ -104,11 +104,12 @@ const VendorRegister = (props) => {
     if (!stripe || !elements) return;
     const cardElement = elements.getElement(CardElement);
     const { error, token } = await stripe.createToken(cardElement);
+    console.log(token);
     let err = false;
     if (validateInput("name", "Name can't be Empty!", "isEmpty").error)
       err = true;
     if (
-      validateInput("businessname", "Business Name can't be Empty!", "isEmpty")
+      validateInput("businessName", "Business Name can't be Empty!", "isEmpty")
     )
       err = true;
     if (
@@ -127,7 +128,7 @@ const VendorRegister = (props) => {
       err = true;
     if (
       validateInput(
-        "passwordconfirm",
+        "passwordConfirmation",
         "Password doesn't Match!",
         "isPasswordMatch"
       ).error
@@ -139,20 +140,18 @@ const VendorRegister = (props) => {
       });
     }
 
-    // if (err) return;
-    
-    console.log('Sending Request Please Wait...');
+    if (err) return;
+
+    console.log("Sending Request Please Wait...");
     fetch(url, {
       method: "POST", // *GET, POST, PUT, DELETE, etc.
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(vendor)
+      body: JSON.stringify(vendor),
     })
-    .then(response => console.log('Response : ',response))
-    .catch(error => console.log('Error : ',error));
-
-    
+      .then((response) => console.log("Response : ", response))
+      .catch((error) => console.log("Error : ", error));
     // props.history.push({
     //   pathname: "/paymentsuccess",
     // });
@@ -192,21 +191,21 @@ const VendorRegister = (props) => {
           <div className="form-text-input">
             <input
               className={`form-control ${
-                inputError.businessname.error ? "error-border" : ""
+                inputError.businessName.error ? "error-border" : ""
               }`}
               type="text"
-              name="businessname"
+              name="businessName"
               placeholder="Business Name"
-              value={vendor.businessname}
+              value={vendor.businessName}
               onChange={onChange}
             />
             <span
               className="error-span"
               style={{
-                display: inputError.businessname.error ? "inline" : "none",
+                display: inputError.businessName.error ? "inline" : "none",
               }}
             >
-              {inputError.businessname.text}
+              {inputError.businessName.text}
             </span>
           </div>
         </div>
@@ -385,21 +384,23 @@ const VendorRegister = (props) => {
           <div className="form-text-input">
             <input
               className={`form-control ${
-                inputError.passwordconfirm.error ? "error-border" : ""
+                inputError.passwordConfirmation.error ? "error-border" : ""
               }`}
               type="password"
-              name="passwordconfirm"
+              name="passwordConfirmation"
               placeholder="Password Confirm"
-              value={vendor.passwordconfirm}
+              value={vendor.passwordConfirmation}
               onChange={onChange}
             />
             <span
               className="error-span"
               style={{
-                display: inputError.passwordconfirm.error ? "inline" : "none",
+                display: inputError.passwordConfirmation.error
+                  ? "inline"
+                  : "none",
               }}
             >
-              {inputError.passwordconfirm.text}
+              {inputError.passwordConfirmation.text}
             </span>
           </div>
         </div>

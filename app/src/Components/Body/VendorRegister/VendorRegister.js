@@ -150,10 +150,11 @@ const VendorRegister = (props) => {
       },
       body: JSON.stringify(vendor),
     })
+      .then((response) => response.json())
       .then((response) => {
-        console.log("Response : ", response);
+        console.log(response);
         if(response.status === 200) {
-          fetch(`http://localhost:8081/api/card/${response.data.id}`, {
+          fetch(`http://localhost:8081/api/card/${response.body.data.id}`, {
             method: "POST" // *GET, POST, PUT, DELETE, etc.
             // headers: {
             //   "Content-Type": "application/json",

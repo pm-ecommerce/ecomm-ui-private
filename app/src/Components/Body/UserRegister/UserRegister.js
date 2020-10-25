@@ -89,7 +89,7 @@ const UserRegister = (props) => {
         console.log("Response : ", response);
         if (response.status === 200)
           props.history.push({
-            pathname: "/paymentsuccess",
+            pathname: "/clogin",
           });
       })
       .catch((error) => console.log("Error : ", error));

@@ -3,6 +3,7 @@ import "./VendorRegister.css";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 
 const url = "http://localhost:8081/api/vendors";
+const amount = 25000;
 
 const CARD_ELEMENT_OPTIONS = {
   iconStyle: "solid",
@@ -143,6 +144,8 @@ const VendorRegister = (props) => {
     // if (err) return;
 
     console.log("Sending Request Please Wait...");
+    let accountId = null;
+    let cardId = null;
     fetch(url, {
       method: "POST",
       headers: {
@@ -153,7 +156,7 @@ const VendorRegister = (props) => {
       .then((response) => response.json())
       .then((response) => {
         console.log(response);
-
+        accountId = response.data.id;
         return fetch(`http://localhost:8080/api/card/${response.data.id}`, {
           method: "POST",
           headers: {
@@ -162,8 +165,8 @@ const VendorRegister = (props) => {
           body: JSON.stringify({
             token: token.id,
             brand: token.card.brand,
-            exp_month: token.card.exp_month,
-            exp_year: token.card.exp_year,
+            expMonth: token.card.exp_month,
+            expYear: token.card.exp_year,
             cardId: token.card.id, // card id
             last4: token.card.last4,
             livemode: false,
@@ -172,16 +175,18 @@ const VendorRegister = (props) => {
       })
       .then((response) => response.json())
       .then((response) => {
-        console.log(response);
-        if(response.status === 200) {
-          props.history.push({
-            pathname: "/paymentsuccess",
-          });
-        }
+        console.log('IDS : ', accountId, cardId);
+        return fetch(`http://localhost:8080/api/card/${accountId}/${cardId}/${amount}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          }
+        });
       })
       .catch((error) => console.log("Error : ", error));
   };
 
+  //account
   return (
     <div id="vendor-register">
       <h2>Register Account</h2>

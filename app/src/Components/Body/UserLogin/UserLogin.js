@@ -1,8 +1,17 @@
-import React from "react";
-import './UserLogin.css';
+import React, { useState } from "react";
+import "./UserLogin.css";
 import { Link } from "react-router-dom";
 
+const url = "http://localhost:8081/api/users/";
+
 const UserLogin = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const onSubmit = () => {
+    fetch()
+  }
+
   return (
     <div className="login-page-container">
       <div className="login-card">
@@ -21,10 +30,7 @@ const UserLogin = () => {
             </p>
           </div>
           <div className="bottom">
-            <Link
-              className="btn"
-              to="/cregister"
-            >
+            <Link className="btn" to="/cregister">
               Continue
             </Link>
           </div>
@@ -45,7 +51,7 @@ const UserLogin = () => {
                 className="form-text-input-login"
                 style={{ marginBottom: 30 }}
               >
-                <input className="form-control"></input>
+                <input className="form-control" name="email" value={email} onChange={(e) => setEmail(e.target.value)}></input>
               </div>
             </div>
             <div className="form-group">
@@ -56,12 +62,18 @@ const UserLogin = () => {
                 Password
               </label>
               <div className="form-text-input-login">
-                <input className="form-control"></input>
+                <input
+                  className="form-control"
+                  type="password"
+                  name="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                ></input>
               </div>
             </div>
           </div>
           <div className="bottom">
-            <div className="btn">Login</div>
+            <div className="btn" onClick={onSubmit}>Login</div>
           </div>
         </div>
       </div>

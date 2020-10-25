@@ -1,8 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import "./VendorLogin.css";
 import { Link } from "react-router-dom";
 
 const VendorLogin = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const onSubmit = () => {
+    console.log(email, password);
+    // fetch()
+  }
   return (
     <div className="login-page-container">
       <div className="login-card">
@@ -21,10 +28,7 @@ const VendorLogin = () => {
             </p>
           </div>
           <div className="bottom">
-            <Link
-              className="btn"
-              to="/vregister"
-            >
+            <Link className="btn" to="/cregister">
               Continue
             </Link>
           </div>
@@ -35,20 +39,39 @@ const VendorLogin = () => {
               <i className="fa"></i> RETURNING VENDOR
             </h2>
             <div className="form-group">
-              <label className="control-label optional" style={{paddingLeft: 5, paddingBottom: 4}}>E-Mail Address</label>
-              <div className="form-text-input-login" style={{marginBottom: 30}}>
-                <input className="form-control"></input>
+              <label
+                className="control-label optional"
+                style={{ paddingLeft: 5, paddingBottom: 4 }}
+              >
+                E-Mail Address
+              </label>
+              <div
+                className="form-text-input-login"
+                style={{ marginBottom: 30 }}
+              >
+                <input className="form-control" name="email" value={email} onChange={(e) => setEmail(e.target.value)}></input>
               </div>
             </div>
             <div className="form-group">
-              <label className="control-label optional" style={{paddingLeft: 5, paddingBottom: 4}}>Password</label>
+              <label
+                className="control-label optional"
+                style={{ paddingLeft: 16, paddingBottom: 4, textAlign: "left" }}
+              >
+                Password
+              </label>
               <div className="form-text-input-login">
-                <input className="form-control"></input>
+                <input
+                  className="form-control"
+                  type="password"
+                  name="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                ></input>
               </div>
             </div>
           </div>
           <div className="bottom">
-            <div className="btn">Login</div>
+            <div className="btn" onClick={onSubmit}>Login</div>
           </div>
         </div>
       </div>

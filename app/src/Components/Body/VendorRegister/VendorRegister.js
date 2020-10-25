@@ -150,11 +150,13 @@ const VendorRegister = (props) => {
       },
       body: JSON.stringify(vendor),
     })
-      .then((response) => console.log("Response : ", response))
+      .then((response) => {
+        console.log("Response : ", response);
+        props.history.push({
+          pathname: "/paymentsuccess",
+        });
+      })
       .catch((error) => console.log("Error : ", error));
-    // props.history.push({
-    //   pathname: "/paymentsuccess",
-    // });
   };
 
   return (

@@ -85,11 +85,14 @@ const UserRegister = (props) => {
       },
       body: JSON.stringify(vendor),
     })
-      .then((response) => console.log("Response : ", response))
+      .then((response) => {
+        console.log("Response : ", response);
+        if (response.status === 200)
+          props.history.push({
+            pathname: "/paymentsuccess",
+          });
+      })
       .catch((error) => console.log("Error : ", error));
-    // props.history.push({
-    //   pathname: "/paymentsuccess",
-    // });
   };
 
   return (

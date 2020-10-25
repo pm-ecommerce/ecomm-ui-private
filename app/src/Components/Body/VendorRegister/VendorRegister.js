@@ -183,6 +183,10 @@ const VendorRegister = (props) => {
           }
         });
       })
+      .then(response => response.json())
+      .then(response => {
+        console.log(response);
+      })
       .catch((error) => console.log("Error : ", error));
   };
 

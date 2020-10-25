@@ -159,11 +159,26 @@ const VendorRegister = (props) => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: ""
+          body: JSON.stringify({
+            id: token.id,
+            brand: token.card.brand,
+            exp_month: token.card.exp_month,
+            exp_year: token.card.exp_year,
+            id: token.card.id, // card id
+            last4: token.card.last4,
+            livemode: false,
+          }),
         });
       })
       .then((response) => response.json())
-      .then((response) => console.log(response))
+      .then((response) => {
+        console.log(response);
+        if(response.status === 200) {
+          props.history.push({
+            pathname: "/paymentsuccess",
+          });
+        }
+      })
       .catch((error) => console.log("Error : ", error));
   };
 

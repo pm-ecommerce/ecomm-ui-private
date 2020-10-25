@@ -190,6 +190,13 @@ const VendorRegister = (props) => {
           method: "PATCH"
         });
       })
+      .then(response => {
+        if(response.status === 200) {
+          props.history.push({
+            pathname: "/paymentsuccess",
+          });
+        }
+      })
       .catch((error) => console.log("Error : ", error));
   };
 

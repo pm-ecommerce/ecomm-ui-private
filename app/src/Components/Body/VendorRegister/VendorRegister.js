@@ -186,7 +186,7 @@ const VendorRegister = (props) => {
       })
       .then(response => response.json())
       .then(response => {
-        return fetch(`http://localhost:8080/api/vendors/${accountId}/send-for-approval?transactionId=${response.data.id}`, {
+        return fetch(`http://localhost:8081/api/vendors/${accountId}/send-for-approval?transactionId=${response.data.id}`, {
           method: "PATCH"
         });
       })

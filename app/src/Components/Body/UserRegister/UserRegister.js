@@ -1,9 +1,20 @@
 import React, { useState } from "react";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
 import "./UserRegister.css";
 
 const url = "http://localhost:8081/api/users/";
 
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
 const UserRegister = (props) => {
+  const [open, setOpen] = React.useState(false);
+  const [popUpMsg, setPopUpMsg] = useState({
+    isError: false,
+    message: ''
+  });
   const [inputError, setInputError] = useState({
     name: { error: false, text: "" },
     email: { error: false, text: "" },
@@ -35,6 +46,14 @@ const UserRegister = (props) => {
     setInputError((prevState) => {
       return { ...prevState, card: { error: false, text: "" } };
     });
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
   };
 
   const validateInput = (prop, errorText, type) => {
@@ -92,7 +111,10 @@ const UserRegister = (props) => {
             pathname: "/clogin",
           });
       })
-      .catch((error) => console.log("Error : ", error));
+      .catch((error) => {
+        setPopUpMsg({isError: true, message: error.message});
+        setOpen(true);
+      });
   };
 
   return (
@@ -200,6 +222,11 @@ const UserRegister = (props) => {
           Continue
         </div>
       </div>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+      <Alert severity={popUpMsg.isError ? 'error': 'success'} onClose={handleClose}>
+          {popUpMsg.message}
+        </Alert>
+      </Snackbar>
     </div>
   );
 };

@@ -1,9 +1,15 @@
 import React, { useState } from "react";
 import "./VendorRegister.css";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
 
 const url = "http://localhost:8081/api/vendors";
-const amount = 25000.00;
+const amount = 25000.0;
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const CARD_ELEMENT_OPTIONS = {
   iconStyle: "solid",
@@ -33,6 +39,12 @@ function CardSection() {
 }
 
 const VendorRegister = (props) => {
+  const [open, setOpen] = useState(false);
+  const [popUpMsg, setPopUpMsg] = useState({
+    isError: false,
+    message: ''
+  });
+
   const stripe = useStripe();
   const elements = useElements();
   const [inputError, setInputError] = useState({
@@ -48,6 +60,14 @@ const VendorRegister = (props) => {
     password: { error: false, text: "" },
     passwordConfirmation: { error: false, text: "" },
   });
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
 
   const [vendor, setVendor] = useState({
     name: "",
@@ -176,28 +196,38 @@ const VendorRegister = (props) => {
       .then((response) => response.json())
       .then((response) => {
         cardId = response.data.id;
-        console.log('IDS : ', accountId, cardId);
-        return fetch(`http://localhost:8080/api/card/${accountId}/${cardId}/${amount}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
+        console.log("IDS : ", accountId, cardId);
+        return fetch(
+          `http://localhost:8080/api/card/${accountId}/${cardId}/${amount}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
           }
-        });
+        );
       })
-      .then(response => response.json())
-      .then(response => {
-        return fetch(`http://localhost:8081/api/vendors/${accountId}/send-for-approval?transactionId=${response.data.id}`, {
-          method: "PATCH"
-        });
+      .then((response) => response.json())
+      .then((response) => {
+        return fetch(
+          `http://localhost:8081/api/vendors/${accountId}/send-for-approval?transactionId=${response.data.id}`,
+          {
+            method: "PATCH",
+          }
+        );
       })
-      .then(response => {
-        if(response.status === 200) {
+      .then((response) => {
+        if (response.status === 200) {
           props.history.push({
             pathname: "/paymentsuccess",
           });
         }
       })
-      .catch((error) => console.log("Error : ", error));
+      .catch((error) => {
+        console.log("Error : ", error);
+        setPopUpMsg({isError: true, message: error.message});
+        setOpen(true);
+      });
   };
 
   //account
@@ -454,6 +484,11 @@ const VendorRegister = (props) => {
           Continue
         </div>
       </div>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert severity={popUpMsg.isError ? 'error': 'success'} onClose={handleClose}>
+          {popUpMsg.message}
+        </Alert>
+      </Snackbar>
     </div>
   );
 };

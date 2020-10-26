@@ -1,11 +1,29 @@
 import React, { useState } from "react";
 import "./VendorLogin.css";
 import { Link } from "react-router-dom";
-const url = "http://localhost:8081/api/vendors/login";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
 
+const url = "http://localhost:8081/api/vendors/login";
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 const VendorLogin = () => {
+  const [open, setOpen] = useState(false);
+  const [popUpMsg, setPopUpMsg] = useState({
+    isError: false,
+    message: "",
+  });
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
 
   const onSubmit = () => {
     console.log("Sending Request Please Wait...");
@@ -16,15 +34,20 @@ const VendorLogin = () => {
       },
       body: JSON.stringify({
         email: email,
-        password: password
+        password: password,
+      }),
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        console.log(response);
+        setOpen(true);
+        setPopUpMsg({ isError: false, message: "Successful!" });
       })
-    })
-    .then(response => response.json())
-    .then(response => {
-      console.log(response);
-    })
-    .catch(err => console.log(err));
-  }
+      .catch((err) => {
+        setOpen(true);
+        setPopUpMsg({ isError: true, message: err.message });
+      });
+  };
   return (
     <div className="login-page-container">
       <div className="login-card">
@@ -56,7 +79,7 @@ const VendorLogin = () => {
             <div className="form-group">
               <label
                 className="control-label optional"
-                style={{ paddingLeft: 5, paddingBottom: 4 }}
+                style={{ width: 97, paddingBottom: 4 }}
               >
                 E-Mail Address
               </label>
@@ -64,7 +87,12 @@ const VendorLogin = () => {
                 className="form-text-input-login"
                 style={{ marginBottom: 30 }}
               >
-                <input className="form-control" name="email" value={email} onChange={(e) => setEmail(e.target.value)}></input>
+                <input
+                  className="form-control"
+                  name="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                ></input>
               </div>
             </div>
             <div className="form-group">
@@ -86,10 +114,20 @@ const VendorLogin = () => {
             </div>
           </div>
           <div className="bottom">
-            <div className="btn" onClick={onSubmit}>Login</div>
+            <div className="btn" onClick={onSubmit}>
+              Login
+            </div>
           </div>
         </div>
       </div>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert
+          severity={popUpMsg.isError ? "error" : "success"}
+          onClose={handleClose}
+        >
+          {popUpMsg.message}
+        </Alert>
+      </Snackbar>
     </div>
   );
 };

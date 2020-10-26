@@ -18,8 +18,8 @@ const HomePage = () => {
         {name:"Gifts & Toys", image: images[0]}
     ];
     return(
-        <div id="main-page-container">
-            <div className="left-column">
+        <div id="main-page-container"><h1>Home page</h1>
+            {/* <div className="left-column">
                 <div className="category-menu">
                     {categories.map((category,index) => (
                         <div key={index} className="category-name">
@@ -33,7 +33,7 @@ const HomePage = () => {
                 <div className="hp-image-container">
                     
                 </div>
-            </div>
+            </div> */}
         </div>
     )
 }

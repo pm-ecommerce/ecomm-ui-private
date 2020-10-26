@@ -12,7 +12,7 @@ const UserLogin = () => {
   const [open, setOpen] = useState(false);
   const [popUpMsg, setPopUpMsg] = useState({
     isError: false,
-    message: ''
+    message: "",
   });
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -40,12 +40,17 @@ const UserLogin = () => {
       .then((response) => response.json())
       .then((response) => {
         console.log(response);
-        setOpen(true);
-        setPopUpMsg({isError: false, message: 'Successful!'});
+        if (response.status === 200) {
+          setOpen(true);
+          setPopUpMsg({ isError: true, message: response.message });
+        } else if(response.status === 500) {
+          setOpen(true);
+          setPopUpMsg({ isError: false, message: "Successful!" });
+        }
       })
       .catch((err) => {
         setOpen(true);
-        setPopUpMsg({isError: true, message: err.message});
+        setPopUpMsg({ isError: true, message: err.message });
       });
   };
 
@@ -122,7 +127,10 @@ const UserLogin = () => {
         </div>
       </div>
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-      <Alert severity={popUpMsg.isError ? 'error': 'success'} onClose={handleClose}>
+        <Alert
+          severity={popUpMsg.isError ? "error" : "success"}
+          onClose={handleClose}
+        >
           {popUpMsg.message}
         </Alert>
       </Snackbar>

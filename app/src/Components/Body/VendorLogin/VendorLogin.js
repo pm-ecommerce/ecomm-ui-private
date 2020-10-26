@@ -40,10 +40,10 @@ const VendorLogin = () => {
       .then((response) => response.json())
       .then((response) => {
         console.log(response);
-        if (response.status === 200) {
+        if (response.status === 500) {
           setOpen(true);
           setPopUpMsg({ isError: true, message: response.message });
-        } else if(response.status === 500) {
+        } else if(response.status === 200) {
           setOpen(true);
           setPopUpMsg({ isError: false, message: "Successful!" });
         }

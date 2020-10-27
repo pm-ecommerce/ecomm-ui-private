@@ -36,7 +36,7 @@ const Header = () => {
                     </div>
                     <div className="search-btn left"><i></i></div>
                 </div>
-                <div className="left cart-container">
+                <div className="cart-container">
                     <div className="left">
                         <span className="items-cart left">02</span>
                         <span className="icon-c">
@@ -54,7 +54,7 @@ const Header = () => {
             </div>
             <div className="logreg-btn">
                 <i className="fa"></i>
-                <Link to={{pathname:"/userType", params: {type: 'Login' }}} style={{marginLeft: 4}}>Login</Link> or <Link to={{pathname:"/userType", params: {type: 'Register' }}}>Register</Link>
+                <Link className="hover-btn" to={{pathname:"/userType", params: {type: 'Login' }}} style={{marginLeft: 4}}>Login</Link> or <Link className="hover-btn" to={{pathname:"/userType", params: {type: 'Register' }}}>Register</Link>
             </div>
         </header>
     )

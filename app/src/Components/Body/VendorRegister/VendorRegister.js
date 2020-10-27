@@ -4,7 +4,7 @@ import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 
-const url = "http://localhost:8081/api/vendors";
+const url = "http://localhost:8080/api/vendors";
 const amount = 25000.0;
 
 function Alert(props) {
@@ -39,6 +39,7 @@ function CardSection() {
 }
 
 const VendorRegister = (props) => {
+  const [cursor, setCursor] = useState('');
   const [open, setOpen] = useState(false);
   const [popUpMsg, setPopUpMsg] = useState({
     isError: false,
@@ -123,6 +124,7 @@ const VendorRegister = (props) => {
 
   const handleSubmit = async (e) => {
     if (!stripe || !elements) return;
+    setCursor('progress');
     const cardElement = elements.getElement(CardElement);
     const { error, token } = await stripe.createToken(cardElement);
     console.log(token);
@@ -218,6 +220,7 @@ const VendorRegister = (props) => {
       })
       .then((response) => {
         if (response.status === 200) {
+          setCursor('');
           props.history.push({
             pathname: "/paymentsuccess",
           });
@@ -227,12 +230,13 @@ const VendorRegister = (props) => {
         console.log("Error : ", error);
         setPopUpMsg({isError: true, message: error.message});
         setOpen(true);
+        setCursor('');
       });
   };
 
   //account
   return (
-    <div id="vendor-register">
+    <div id="vendor-register" style={{cursor: cursor}}>
       <h2>Register Account</h2>
       <p>
         If you already have an account with us, please login at the login page.

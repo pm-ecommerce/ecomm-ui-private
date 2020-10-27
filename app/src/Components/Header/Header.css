@@ -4,9 +4,80 @@
     padding: 29px 0 22px 0;
 }
 
-#main-header .container {
-    width: 975px;
-    margin: auto;
+@media (max-width: 1649px) and (min-width: 1366px) {
+    #main-header .container {
+        width: 1375px;
+        margin: auto;
+    } 
+    .search-div input{
+        border: none;
+        background-color: #fff;
+        z-index: 0;
+        height: 38px;
+        padding-left: 20px;
+        font-size: 12px;
+        width: 500px;
+        background-color: #fff;
+        color: #999;
+        position: relative;
+    }
+}
+
+@media (max-width: 1365px) and (min-width: 1200px) {
+    #main-header .container {
+        width: 1075px;
+        margin: auto;
+    } 
+    .search-div input{
+        border: none;
+        background-color: #fff;
+        z-index: 0;
+        height: 38px;
+        padding-left: 20px;
+        font-size: 12px;
+        width: 300px;
+        background-color: #fff;
+        color: #999;
+        position: relative;
+    }
+}
+
+@media (max-width: 1199px) and (min-width: 992px) {
+    #main-header .container {
+        width: 975px;
+        margin: auto;
+    } 
+    .search-div input{
+        border: none;
+        background-color: #fff;
+        z-index: 0;
+        height: 38px;
+        padding-left: 20px;
+        font-size: 12px;
+        width: 200px;
+        background-color: #fff;
+        color: #999;
+        position: relative;
+    }
+}
+
+@media (max-width: 991px) and (min-width: 768px) {
+    #main-header .container {
+        width: 905px;
+        margin: auto;
+    } 
+    .search-div input{
+        border: none;
+        background-color: #fff;
+        z-index: 0;
+        height: 38px;
+        padding-left: 20px;
+        font-size: 12px;
+        width: 140px;
+        background-color: #fff;
+        color: #999;
+        position: relative;
+    }
 }
 
 .left{
@@ -17,6 +88,14 @@
     padding-right: 15px;
     padding-left: 15px;
     width: 164px;
+}
+
+.hover-btn{
+    transition: color 0.5s;
+}
+
+.hover-btn:hover{
+    color: #ff3c20;
 }
 
 .category{
@@ -120,19 +199,6 @@
     font-weight: 400;
 }
 
-.search-div input{
-    border: none;
-    background-color: #fff;
-    z-index: 0;
-    height: 38px;
-    padding-left: 20px;
-    font-size: 12px;
-    width: 200px;
-    background-color: #fff;
-    color: #999;
-    position: relative;
-}
-
 .search-btn{
     background-color: #ff3c20;
     text-align: center;
@@ -166,6 +232,7 @@
 
 .cart-container{
     margin-left: 70px;
+    float: right;
 }
 
 .icon-c{

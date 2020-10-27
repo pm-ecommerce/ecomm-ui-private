@@ -25,6 +25,11 @@
     padding: 15px 0;
     cursor: pointer;
     font-size: 14px;
+    transition: color 0.5s;
+}
+
+.menu-button:hover{
+    color: #ff3c20;
 }
 
 .caret{

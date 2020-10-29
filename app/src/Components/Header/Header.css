@@ -121,16 +121,6 @@
     margin-top: 2px;
     background: #fff;
 }
-.cat-btn:after{
-    font-family: 'FontAwesome';
-    content: "\f107";
-    font-size: 16px;
-    color: #fff;
-    position: absolute;
-    right: 20px;
-    top: 0;
-    font-weight: 400;
-}
 
 .category .cat-btn{
     border-top-right-radius: 3px;
@@ -187,18 +177,6 @@
     cursor: pointer;
 }
 
-.sf-container .select-div:after{
-    font-family: 'FontAwesome';
-    content: "\f107";
-    font-size: 16px;
-    color: #ab9f99;
-    position: relative;
-    top: -27px;
-    float: left;
-    right: -112px;
-    font-weight: 400;
-}
-
 .search-btn{
     background-color: #ff3c20;
     text-align: center;
@@ -218,10 +196,6 @@
     color: #fff;
     display: inline-block;
     font: normal normal normal 14px/1 FontAwesome;
-}
-
-.search-btn i::before{
-    content: "\f002";
 }
 
 .select-div{
@@ -251,9 +225,6 @@
     color: #fff;
 }
 
-.shopping-bag::before{
-    content: "\f290";
-}
 .fa{
     display: inline-block;
     font: normal normal normal 14px/1 FontAwesome;
@@ -317,15 +288,6 @@
     padding: 9px 15px 0 15px;
     font-size: 14px;
     line-height: 22px;
-}
-
-.logreg-btn::before{
-    content: "\f023";
-    display: inline-block;
-    font: normal normal normal 14px/1 FontAwesome;
-    font-size: inherit;
-    text-rendering: auto;
-    -webkit-font-smoothing: antialiased;
 }
 
 .logreg-btn span{

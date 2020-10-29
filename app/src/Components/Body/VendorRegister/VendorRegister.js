@@ -4,7 +4,7 @@ import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 
-const url = "http://localhost:8081/api/vendors";
+const url = "http://localhost:8080/pm-accounts/api/vendors";
 const amount = 25000.0;
 
 function Alert(props) {
@@ -177,7 +177,7 @@ const VendorRegister = (props) => {
       .then((response) => {
         console.log(response);
         accountId = response.data.id;
-        return fetch(`http://localhost:8083/api/card/${response.data.id}`, {
+        return fetch(`http://localhost:8080/pm-shopping-cart/api/card/${response.data.id}`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -198,7 +198,7 @@ const VendorRegister = (props) => {
         cardId = response.data.id;
         console.log("IDS : ", accountId, cardId);
         return fetch(
-          `http://localhost:8083/api/card/${accountId}/${cardId}/${amount}`,
+          `http://localhost:8080/pm-shopping-cart/api/card/${accountId}/${cardId}/${amount}`,
           {
             method: "GET",
             headers: {
@@ -210,7 +210,7 @@ const VendorRegister = (props) => {
       .then((response) => response.json())
       .then((response) => {
         return fetch(
-          `http://localhost:8081/api/vendors/${accountId}/send-for-approval?transactionId=${response.data.id}`,
+          `http://localhost:8080/pm-shopping-cart/api/vendors/${accountId}/send-for-approval?transactionId=${response.data.id}`,
           {
             method: "PATCH",
           }

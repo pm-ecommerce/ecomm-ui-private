@@ -4,6 +4,23 @@
     padding: 29px 0 22px 0;
 }
 
+#main-header .container {
+    width: 1375px;
+    margin: auto;
+} 
+.search-div input{
+    border: none;
+    background-color: #fff;
+    z-index: 0;
+    height: 38px;
+    padding-left: 20px;
+    font-size: 12px;
+    width: 500px;
+    background-color: #fff;
+    color: #999;
+    position: relative;
+}
+
 @media (max-width: 1649px) and (min-width: 1366px) {
     #main-header .container {
         width: 1375px;

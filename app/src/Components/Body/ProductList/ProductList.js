@@ -24,13 +24,12 @@ const useStyles = makeStyles({
 });
 
 const ProductList = (props) => {
-  console.log(props.list, 'list');
   const classes = useStyles();
   return (
     <div className="pl-comp-container">
       {props.list
         ? props.list.map((product, index) => (
-            <Link to="/home/product" key={index}>
+            <Link to={{pathname:"/home/product", slug:product.slug}} key={index}>
               <Card className={classes.root} >
                 <CardActionArea>
                   <CardMedia

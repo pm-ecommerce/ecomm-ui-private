@@ -7,7 +7,7 @@ import UserRegister from './UserRegister/UserRegister';
 import SuccessPage from './SuccessPage/SuccessPage';
 import VendorLogin from './VendorLogin/VendorLogin';
 import UserLogin from './UserLogin/UserLogin';
-
+import Cart from './Cart/Cart';
 import { Route, Switch } from "react-router-dom";
 
 const Body = () => {
@@ -22,6 +22,7 @@ const Body = () => {
         <Route path="/cregister" component={UserRegister} />
         <Route path="/vregister" component={VendorRegister} />
         <Route path="/paymentsuccess" component={SuccessPage} />
+        <Route path="/cart" component={Cart} />
       </Switch>
     </div>
   );

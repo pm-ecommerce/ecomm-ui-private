@@ -18,15 +18,23 @@ const useStyles = makeStyles({
   },
 });
 
-const ProductDetailPage = () => {
+const ProductDetailPage = (props) => {
+//   console.log(props);
   const price = 40;
   const classes = useStyles();
   const [value, setValue] = React.useState(1);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    fetch(`http://localhost:8083/api/products/${props.location.slug}`)
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res, "product page");
+      })    
+      .catch((err) => console.log(err));
+  }, []);
 
   const handleSliderChange = (event, newValue) => {
-    setValue(newValue);
+    setValue((newValue < 1) ? 1 : newValue);
   };
 
   const handleInputChange = (event) => {
@@ -34,8 +42,8 @@ const ProductDetailPage = () => {
   };
 
   const handleBlur = () => {
-    if (value < 0) {
-      setValue(0);
+    if (value < 1) {
+      setValue(1);
     } else if (value > 300) {
       setValue(300);
     }
@@ -110,7 +118,7 @@ const ProductDetailPage = () => {
           <Grid container spacing={2} alignItems="center">
             <Grid item xs>
               <Slider
-                value={typeof value === "number" ? value : 0}
+                value={typeof value === "number" ? value : 1}
                 onChange={handleSliderChange}
                 aria-labelledby="input-slider"
               />

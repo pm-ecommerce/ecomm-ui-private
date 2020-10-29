@@ -4,7 +4,7 @@ import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 
-const url = "http://localhost:8080/pm-accounts/api/vendors";
+const url = "http://localhost:8080";
 const amount = 25000.0;
 
 function Alert(props) {
@@ -39,6 +39,7 @@ function CardSection() {
 }
 
 const VendorRegister = (props) => {
+  const [cursor, setCursor] = useState('');
   const [open, setOpen] = useState(false);
   const [popUpMsg, setPopUpMsg] = useState({
     isError: false,
@@ -123,6 +124,7 @@ const VendorRegister = (props) => {
 
   const handleSubmit = async (e) => {
     if (!stripe || !elements) return;
+    setCursor('progress');
     const cardElement = elements.getElement(CardElement);
     const { error, token } = await stripe.createToken(cardElement);
     console.log(token);
@@ -161,12 +163,12 @@ const VendorRegister = (props) => {
       });
     }
 
-    // if (err) return;
+    if (err) console.log('');
 
     console.log("Sending Request Please Wait...");
     let accountId = null;
     let cardId = null;
-    fetch(url, {
+    fetch(`${url}/pm-accounts/api/vendors`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -177,7 +179,7 @@ const VendorRegister = (props) => {
       .then((response) => {
         console.log(response);
         accountId = response.data.id;
-        return fetch(`http://localhost:8080/pm-shopping-cart/api/card/${response.data.id}`, {
+        return fetch(`${url}/pm-shopping-cart/api/card/${response.data.id}`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -198,7 +200,7 @@ const VendorRegister = (props) => {
         cardId = response.data.id;
         console.log("IDS : ", accountId, cardId);
         return fetch(
-          `http://localhost:8080/pm-shopping-cart/api/card/${accountId}/${cardId}/${amount}`,
+          `${url}/pm-shopping-cart/api/card/${accountId}/${cardId}/${amount}`,
           {
             method: "GET",
             headers: {
@@ -210,7 +212,7 @@ const VendorRegister = (props) => {
       .then((response) => response.json())
       .then((response) => {
         return fetch(
-          `http://localhost:8080/pm-shopping-cart/api/vendors/${accountId}/send-for-approval?transactionId=${response.data.id}`,
+          `${url}/pm-accounts/api/vendors/${accountId}/send-for-approval?transactionId=${response.data.id}`,
           {
             method: "PATCH",
           }
@@ -218,6 +220,7 @@ const VendorRegister = (props) => {
       })
       .then((response) => {
         if (response.status === 200) {
+          setCursor('');
           props.history.push({
             pathname: "/paymentsuccess",
           });
@@ -227,12 +230,13 @@ const VendorRegister = (props) => {
         console.log("Error : ", error);
         setPopUpMsg({isError: true, message: error.message});
         setOpen(true);
+        setCursor('');
       });
   };
 
   //account
   return (
-    <div id="vendor-register">
+    <div id="vendor-register" style={{cursor: cursor}}>
       <h2>Register Account</h2>
       <p>
         If you already have an account with us, please login at the login page.

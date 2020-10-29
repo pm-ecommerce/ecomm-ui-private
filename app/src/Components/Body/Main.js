@@ -15,6 +15,7 @@ const Body = () => {
     <div id="body">
       <Switch>
         <Route exact path="/" component={HomePage} />
+        <Route path="/home" component={HomePage} />
         <Route path="/usertype" component={SelectUserType} />
         <Route path="/clogin" component={UserLogin} />
         <Route path="/vlogin" component={VendorLogin} />

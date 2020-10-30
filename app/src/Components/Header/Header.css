@@ -235,6 +235,7 @@
     text-align: center;
     line-height: 40px;
     background-color: #ff3c20;
+    cursor: pointer;
 }
 
 .icon-c i{

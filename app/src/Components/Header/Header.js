@@ -6,6 +6,7 @@ import {withRouter} from 'react-router-dom';
 import config from '../../Config';
 
 const updateBodyClasses = (props) => {
+    console.log(props);
     if (props.location.pathname !== '/') {
         document.body.classList.remove('common-home');
     } else {
@@ -48,7 +49,7 @@ const Header = (props) => {
     useEffect(() => {
         fetchCategories();
         updateBodyClasses(props);
-    }, []);
+    }, [props]);
 
     return (
         <header id="header" className=" typeheader-1">

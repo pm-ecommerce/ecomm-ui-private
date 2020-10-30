@@ -1,129 +1,175 @@
-import React, { useState, useEffect } from "react";
-import "./Header.css";
-import Logo from "./img/logo.png";
-import { Link } from "react-router-dom";
+import React, {useState, useEffect} from 'react';
+import './Header.css';
+import Logo from './img/logo.png';
+import {Link} from 'react-router-dom';
 import {
-  AiOutlineSearch,
-  AiOutlineLogin,
-  AiOutlineShopping,
-} from "react-icons/ai";
-// import { getCategories } from "../../actions";
-// import { useDispatch, useSelector } from "react-redux";
-import { withRouter} from 'react-router-dom';
+    AiOutlineSearch,
+    AiOutlineLogin,
+    AiOutlineShopping,
+} from 'react-icons/ai';
+import {withRouter} from 'react-router-dom';
 
 
 const Header = (props) => {
-  const [categories, setCategories] = useState([]);
-  const [searchWord, setSearchWord] = useState("");
-  const [categoryId, setCategoryId] = useState(1);
-  const onClick = () => {
-    console.log(searchWord);
-    props.history.push({
-      pathname: "/home/search",
-      state: {
-        categoryId: categoryId,
-        searchWord: searchWord
-      },
-    });
-  };
-  useEffect(() => {
-    fetch("http://localhost:8083/api/categories/")
-      .then((res) => res.json())
-      .then((res) => {
-        const obj = res.data.map((category) => ({
-          name: category.name,
-          id: category.id,
-        }));
-        console.log(obj);
-        setCategories(obj);
-      })
-      .catch((err) => console.log(err));
-  }, []);
+    const [categories, setCategories] = useState([]);
+    const [searchWord, setSearchWord] = useState('');
+    const [categoryId, setCategoryId] = useState(1);
+    const onClick = () => {
+        console.log(searchWord);
+        props.history.push({
+            pathname : '/home/search',
+            state : {
+                categoryId : categoryId,
+                searchWord : searchWord
+            },
+        });
+    };
+    useEffect(() => {
+        fetch('http://localhost:8080/pm-search/api/categories/')
+            .then((res) => res.json())
+            .then((res) => {
+                const obj = res.data.map((category) => ({
+                    name : category.name,
+                    id : category.id,
+                }));
+                setCategories(obj);
+            })
+            .catch((err) => console.log(err));
+    }, []);
 
-  return (
-    <header id="main-header">
-      <div className="header-top container">
-        <Link to="/">
-          <div id="logo" className="left">
-            <img src={Logo} title="ECommerce" alt="Your Store" />
-          </div>
-        </Link>
-      </div>
-      <div className="header-bottom container">
-        <div className="category left">
-          <div className="category-tab">
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
-          <div className="cat-btn">All Categories</div>
-        </div>
-        <div className="left sf-container">
-          <div className="select-div left">
-            <select onChange={(e) => setCategoryId(e.target.value)}>
-              <option>All categories</option>
-              {categories.map((category) => (
-                <option key={category.id} id={category.id} value={category.id}>
-                  {category.name}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="search-div left">
-            <input
-              placeholder="Keyword here..."
-              value={searchWord}
-              onChange={(e) => setSearchWord(e.target.value)}
-            />
-          </div>
-          <div className="search-btn left" onClick={onClick}>
-            <i>
-              <AiOutlineSearch
-                size={20}
-                style={{ position: "relative", top: 4 }}
-              />
-            </i>
-          </div>
-        </div>
-        <div className="cart-container">
-          <div className="left">
-            <span className="items-cart left">02</span>
-            <span className="icon-c">
-              <i className="fa shopping-bag">
-                <AiOutlineShopping />
-              </i>
-            </span>
-          </div>
-          <div className="left shopcart-inner">
-            <p className="text-cart">MY CART</p>
-            <span className="cart-total">
-              <span className="items-cart2"></span>
-              <span className="items-carts orange">- $162.00</span>
-            </span>
-          </div>
-        </div>
-      </div>
-      <div className="logreg-btn">
-        <i className="fa">
-          <AiOutlineLogin size={20} style={{ position: "relative", top: 4 }} />
-        </i>
-        <Link
-          className="hover-btn"
-          to={{ pathname: "/userType", params: { type: "Login" } }}
-          style={{ marginLeft: 4 }}
-        >
-          Login
-        </Link>{" "}
-        or{" "}
-        <Link
-          className="hover-btn"
-          to={{ pathname: "/userType", params: { type: "Register" } }}
-        >
-          Register
-        </Link>
-      </div>
-    </header>
-  );
+    return (
+        <header id="header" className=" typeheader-1">
+            <div className="header-top container">
+                <Link to="/">
+                    <div id="logo" className="left">
+                        <img src={ Logo } title="ECommerce" alt="Your Store"/>
+                    </div>
+                </Link>
+            </div>
+            <div className="header-bottom hidden-compact">
+                <div className="container">
+                    <div className="row">
+
+                        <div className="bottom1 menu-vertical col-lg-2 col-md-3 col-sm-3">
+                            <div className="responsive so-megamenu megamenu-style-dev ">
+                                <div className="so-vertical-menu ">
+                                    <nav className="navbar-default">
+
+                                        <div className="container-megamenu vertical">
+                                            <div id="menuHeading">
+                                                <div className="megamenuToogle-wrapper">
+                                                    <div className="megamenuToogle-pattern">
+                                                        <div className="container">
+                                                            <div>
+                                                                <span></span>
+                                                                <span></span>
+                                                                <span></span>
+                                                            </div>
+                                                            All Categories
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div className="navbar-header">
+                                                <button type="button" id="show-verticalmenu" data-toggle="collapse"
+                                                        className="navbar-toggle">
+                                                    <i className="fa fa-bars"></i>
+                                                    <span>  All Categories     </span>
+                                                </button>
+                                            </div>
+                                            <div className="vertical-wrapper">
+                                                <span id="remove-verticalmenu" className="fa fa-times"></span>
+                                                <div className="megamenu-pattern">
+                                                    <div className="container-mega">
+                                                        <ul className="megamenu">
+                                                            { categories.map((category) => (
+                                                                <li className="item-vertical hover">
+                                                                    <p className="close-menu"></p>
+                                                                    <a href={ '/category/' + category.id }
+                                                                       className="clearfix">
+                                                                        <span>{ category.name }</span>
+                                                                    </a>
+                                                                </li>
+                                                            )) }
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </nav>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div className="bottom2 col-lg-7 col-md-6 col-sm-6">
+                            <div className="search-header-w">
+                                <div className="icon-search hidden-lg hidden-md hidden-sm">
+                                    <i className="fa fa-search"></i></div>
+
+                                <div id="sosearchpro" className="sosearchpro-wrapper so-search ">
+
+                                    <div id="search0" className="search input-group form-group">
+                                        <div
+                                            className="select_category filter_type  icon-select hidden-sm hidden-xs">
+                                            <select className="no-border" name="category_id"
+                                                    onChange={ (e) => setCategoryId(e.target.value) }>
+                                                <option>All categories</option>
+                                                { categories.map((category) => (
+                                                    <option key={ category.id } id={ category.id }
+                                                            value={ category.id }>
+                                                        { category.name }
+                                                    </option>
+                                                )) }
+                                            </select>
+                                        </div>
+                                        <input className="autosearch-input form-control" type="text"
+                                               value={ searchWord }
+                                               onChange={ (e) => setSearchWord(e.target.value) }
+                                               name="search"/>
+                                        <span className="input-group-btn">
+                                            <button type="button" className="button-search btn btn-primary"
+                                                    name="submit_search" onClick={ onClick }>
+                                                <i className="fa fa-search"></i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="bottom3 col-lg-3 col-md-3 col-sm-3">
+                            <div className="shopping_cart">
+                                <div id="cart" className="btn-shopping-cart">
+
+                                    <a className="btn-group top_cart dropdown-toggle" href={ '/cart' }>
+                                        <div className="shopcart">
+                                        <span className="icon-c">
+                                            <i className="fa fa-shopping-bag"></i>
+                                          </span>
+                                            <div className="shopcart-inner">
+                                                <p className="text-shopping-cart">
+                                                    My cart
+                                                </p>
+
+                                                <span className="total-shopping-cart cart-total-full">
+                                                    <span className="items_cart">02</span><span
+                                                    className="items_cart2"> item(s)</span><span
+                                                    className="items_carts"> - $162.00 </span>
+                                            </span>
+                                            </div>
+                                        </div>
+                                    </a>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+    );
 };
 
 export default withRouter(Header);

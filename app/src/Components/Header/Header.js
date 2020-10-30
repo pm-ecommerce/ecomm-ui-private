@@ -84,7 +84,7 @@ const Header = (props) => {
                                                     <div className="container-mega">
                                                         <ul className="megamenu">
                                                             { categories.map((category) => (
-                                                                <li className="item-vertical hover">
+                                                                <li key={category.id} className="item-vertical hover">
                                                                     <p className="close-menu"></p>
                                                                     <a href={ '/category/' + category.id }
                                                                        className="clearfix">

@@ -9,12 +9,12 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles({
-  root: {
-    width: 250,
-  },
-  input: {
-    width: 42,
-  },
+    root : {
+        width : 250,
+    },
+    input : {
+        width : 42,
+    },
 });
 
 const ProductDetailPage = (props) => {
@@ -36,17 +36,17 @@ const ProductDetailPage = (props) => {
     setValue(newValue < 1 ? 1 : newValue);
   };
 
-  const handleInputChange = (event) => {
-    setValue(event.target.value === "" ? "" : Number(event.target.value));
-  };
+    const handleInputChange = (event) => {
+        setValue(event.target.value === '' ? '' : Number(event.target.value));
+    };
 
-  const handleBlur = () => {
-    if (value < 1) {
-      setValue(1);
-    } else if (value > 300) {
-      setValue(300);
-    }
-  };
+    const handleBlur = () => {
+        if (value < 1) {
+            setValue(1);
+        } else if (value > 300) {
+            setValue(300);
+        }
+    };
 
   return (
     <div className="product-detail-container">
@@ -153,9 +153,9 @@ const ProductDetailPage = (props) => {
         <div className="description-content">
           <p>{product.description}</p>
         </div>
+        </div>
       </div>
-    </div>
-  );
+    );
 };
 
 export default ProductDetailPage;

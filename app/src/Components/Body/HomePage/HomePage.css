@@ -1,5 +1,5 @@
 @media (max-width: 1649px) and (min-width: 1366px) {
-    #main-page-container{
+    #main-page-container {
         padding-top: 30px;
         width: 1375px;
         margin: auto;
@@ -9,7 +9,7 @@
 }
 
 @media (max-width: 1365px) and (min-width: 1200px) {
-    #main-page-container{
+    #main-page-container {
         padding-top: 30px;
         width: 1075px;
         margin: auto;
@@ -19,7 +19,7 @@
 }
 
 @media (max-width: 1199px) and (min-width: 992px) {
-    #main-page-container{
+    #main-page-container {
         padding-top: 30px;
         width: 975px;
         margin: auto;
@@ -29,7 +29,7 @@
 }
 
 @media (max-width: 991px) and (min-width: 768px) {
-    #main-page-container{
+    #main-page-container {
         padding-top: 30px;
         width: 905px;
         margin: auto;
@@ -38,19 +38,19 @@
     }
 }
 
-.category-menu{
+.category-menu {
     box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.15);
     background-color: #fff;
     border-bottom-right-radius: 3px;
     border-bottom-left-radius: 3px;
 }
 
-.category-menu .category-name{
+.category-menu .category-name {
     cursor: pointer;
     padding: 15px 15px 10px 15px;
 }
 
-.category-menu .category-name::after{
+.category-menu .category-name::after {
     color: #ccc;
     font-family: 'FontAwesome';
     display: inline-block;
@@ -61,7 +61,7 @@
     top: 8px;
 }
 
-.cn-container{
+.cn-container {
     color: #666;
     display: block;
     font-size: 14px;
@@ -72,18 +72,18 @@
     text-transform: capitalize;
 }
 
-.category-name-img{
+.category-name-img {
     position: relative;
     margin-right: 10px;
     top: 4px;
 }
 
-.category-name span{
+.category-name span {
     position: relative;
     bottom: 3px;
 }
 
-.modtitle{
+.modtitle {
     margin-bottom: 15px;
     border-bottom: 2px solid #eee;
     display: inline-block;
@@ -96,7 +96,7 @@
     text-transform: uppercase;
 }
 
-.modtitle span{
+.modtitle span {
     font-size: 16px;
     color: #fff;
     font-weight: 700;
@@ -111,7 +111,11 @@
     bottom: -2px;
 }
 
-.product-list-container{
+.product-list-container {
     margin-left: 30px;
     margin-top: 30px;
+}
+
+.main-left .col1 {
+    min-height: 252px;
 }

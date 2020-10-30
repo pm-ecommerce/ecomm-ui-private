@@ -1,8 +1,8 @@
-import React from "react";
-import "./Main.css";
-import HomePage from "./HomePage/HomePage";
-import SelectUserType from "./UserTypeSelection/SelectUserType";
-import VendorRegister from "./VendorRegister/VendorRegister";
+import React from 'react';
+import './Main.css';
+import HomePage from './HomePage/HomePage';
+import SelectUserType from './UserTypeSelection/SelectUserType';
+import VendorRegister from './VendorRegister/VendorRegister';
 import UserRegister from './UserRegister/UserRegister';
 import SuccessPage from './SuccessPage/SuccessPage';
 import VendorLogin from './VendorLogin/VendorLogin';

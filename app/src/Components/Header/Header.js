@@ -9,20 +9,18 @@ import {
 } from "react-icons/ai";
 // import { getCategories } from "../../actions";
 // import { useDispatch, useSelector } from "react-redux";
-import { withRouter} from 'react-router-dom';
-
+import { withRouter } from "react-router-dom";
 
 const Header = (props) => {
   const [categories, setCategories] = useState([]);
   const [searchWord, setSearchWord] = useState("");
   const [categoryId, setCategoryId] = useState(1);
   const onClick = () => {
-    console.log(searchWord);
     props.history.push({
       pathname: "/home/search",
       state: {
         categoryId: categoryId,
-        searchWord: searchWord
+        searchWord: searchWord,
       },
     });
   };
@@ -34,7 +32,6 @@ const Header = (props) => {
           name: category.name,
           id: category.id,
         }));
-        console.log(obj);
         setCategories(obj);
       })
       .catch((err) => console.log(err));
@@ -87,12 +84,14 @@ const Header = (props) => {
         </div>
         <div className="cart-container">
           <div className="left">
-            <span className="items-cart left">02</span>
-            <span className="icon-c">
-              <i className="fa shopping-bag">
-                <AiOutlineShopping />
-              </i>
-            </span>
+            <Link to="/cart">
+              <span className="items-cart left">02</span>
+              <span className="icon-c">
+                <i className="fa shopping-bag">
+                  <AiOutlineShopping />
+                </i>
+              </span>
+            </Link>
           </div>
           <div className="left shopcart-inner">
             <p className="text-cart">MY CART</p>

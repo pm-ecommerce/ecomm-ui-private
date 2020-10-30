@@ -8,6 +8,7 @@ import SuccessPage from './SuccessPage/SuccessPage';
 import VendorLogin from './VendorLogin/VendorLogin';
 import UserLogin from './UserLogin/UserLogin';
 import Cart from './Cart/Cart';
+import Checkout from './Checkout/Checkout';
 import { Route, Switch } from "react-router-dom";
 
 const Body = () => {
@@ -23,6 +24,7 @@ const Body = () => {
         <Route path="/vregister" component={VendorRegister} />
         <Route path="/paymentsuccess" component={SuccessPage} />
         <Route path="/cart" component={Cart} />
+        <Route path="/checkout" component={Checkout} />
       </Switch>
     </div>
   );

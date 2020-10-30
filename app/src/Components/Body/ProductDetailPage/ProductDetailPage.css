@@ -67,18 +67,6 @@
     margin-bottom: 15px;
 }
 
-.overview{
-    max-height: 85px;
-    overflow: hidden;
-}
-
-.overview::after{
-    content: "...";
-    position: absolute;
-    bottom: 202px;
-    right: 90px;
-}
-
 .description-container{
     margin: 40px 0;
     display: inline-block;

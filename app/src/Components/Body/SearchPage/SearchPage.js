@@ -1,47 +1,71 @@
-import React, { useState, useEffect } from "react";
-import ProductList from "../ProductList/ProductList";
-import Pagination from "@material-ui/lab/Pagination";
-import "./SearchPage.css";
+import React, {useState, useEffect, Fragment} from 'react';
+import ProductList from '../ProductList/ProductList';
+import Pagination from '@material-ui/lab/Pagination';
+import './SearchPage.css';
+import config from '../../../Config';
 
 const SearchPage = (props) => {
-  const { categoryId, searchWord } = props.location.state;
-  const [page, setPage] = useState(1);
-  const [list, setList] = useState([]);
-  useEffect(() => {
-    fetch(`http://localhost:8083/api/search?name=${searchWord}&categoryId=${categoryId}&highPrice=100&lowPrice=0&limit=10&page=${page}`)
-      .then((res) => res.json())
-      .then((res) => {
-        console.log(res, 'res');
-        setList(res.data);
-      })
-      .catch((err) => console.log(err));
-  }, [props]);
+    const query = new URLSearchParams(props.location.search);
+    const categoryId = query.get('categoryId') || 0;
+    const searchWord = query.get('query') || '';
+    const [page, setPage] = useState(1);
+    const [list, setList] = useState([]);
 
-  const onChange = (e, page) => {
-    console.log(page);
-    setPage(page);
-  };
+    const loadSearch = (page = 1) => {
+        const url = new URL(`${ config.baseUrl }/pm-search/api/search`);
+        const params = {
+            limit : 20,
+            page
+        };
+        if (searchWord.length > 0) {
+            params.name = searchWord;
+        }
+        if (categoryId > 0) {
+            params.categoryId = categoryId;
+        }
 
-  return (
-    <div>
-      <div className="product-list-container">
-        <div className="module">
-          <h3 className="modtitle">
-            <span>{props.location.state.name}</span>
-          </h3>
+        url.search = new URLSearchParams(params).toString();
+
+        fetch(url)
+            .then((res) => res.json())
+            .then((res) => {
+                setList(res.data);
+            })
+            .catch((err) => console.log(err));
+    };
+
+    const onChange = (e, p) => {
+        if (p !== page && p > 0 && p <= list.totalPages) {
+            setPage(p);
+        }
+    };
+
+    useEffect(() => {
+        loadSearch(page);
+    }, []);
+
+    return (
+        <div id="content">
+            <div className="row">
+                <div className="product-list-container">
+                    <div className="module">
+                        <h3 className="modtitle">
+                            <span>Showing search results for { searchWord }</span>
+                        </h3>
+                    </div>
+                    <ProductList list={ list }/>
+                </div>
+                <div className="pagination-container">
+                    <Pagination
+                        count={ list.totalPages }
+                        variant="outlined"
+                        color="primary"
+                        onChange={ onChange }
+                    />
+                </div>
+            </div>
         </div>
-        <ProductList list={list} />
-      </div>
-      <div className="pagination-container">
-        <Pagination
-          count={10}
-          variant="outlined"
-          color="primary"
-          onChange={onChange}
-        />
-      </div>
-    </div>
-  );
+    );
 };
 
 export default SearchPage;

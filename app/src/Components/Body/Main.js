@@ -10,14 +10,8 @@ import UserLogin from './UserLogin/UserLogin';
 import Cart from './Cart/Cart';
 import {Route, Switch} from 'react-router-dom';
 import ProductDetailPage from './ProductDetailPage/ProductDetailPage';
-
-
-const prodDetails = (
-    <Switch>
-        <Route exact path="/products" component={ HomePage }/>
-        <Route path="/products/:slug" component={ ProductDetailPage }/>
-    </Switch>
-);
+import CategoryPage from './CategoryPage/CategoryPage';
+import SearchPage from './SearchPage/SearchPage';
 
 const Body = () => {
 
@@ -26,6 +20,8 @@ const Body = () => {
             <Switch>
                 <Route exact path="/" component={ HomePage }/>
                 <Route path="/products/:slug" component={ ProductDetailPage }/>
+                <Route path="/category/:id" component={ CategoryPage }/>
+                <Route path="/search" component={ SearchPage }/>
                 <Route path="/usertype" component={ SelectUserType }/>
                 <Route path="/clogin" component={ UserLogin }/>
                 <Route path="/vlogin" component={ VendorLogin }/>

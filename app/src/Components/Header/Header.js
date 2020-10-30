@@ -2,20 +2,27 @@ import React, {useState, useEffect} from 'react';
 import './Header.css';
 import Logo from './img/logo.png';
 import {Link} from 'react-router-dom';
-import {
-    AiOutlineSearch,
-    AiOutlineLogin,
-    AiOutlineShopping,
-} from 'react-icons/ai';
 import {withRouter} from 'react-router-dom';
+import config from '../../Config';
 
+const updateBodyClasses = (props) => {
+    if (props.location.pathname !== '/') {
+        document.body.classList.remove('common-home');
+    } else {
+        document.body.classList.add('common-home');
+    }
+};
 
 const Header = (props) => {
+    const query = new URLSearchParams(props.location.search);
+    const catId = query.get('categoryId') || 0;
+    const queryStr = query.get('query') || '';
+
     const [categories, setCategories] = useState([]);
-    const [searchWord, setSearchWord] = useState('');
-    const [categoryId, setCategoryId] = useState(1);
+    const [searchWord, setSearchWord] = useState(queryStr);
+    const [categoryId, setCategoryId] = useState(catId);
+
     const onClick = () => {
-        console.log(searchWord);
         props.history.push({
             pathname : '/home/search',
             state : {
@@ -24,8 +31,9 @@ const Header = (props) => {
             },
         });
     };
-    useEffect(() => {
-        fetch('http://localhost:8080/pm-search/api/categories/')
+
+    const fetchCategories = () => {
+        fetch(`${ config.baseUrl }/pm-search/api/categories/`)
             .then((res) => res.json())
             .then((res) => {
                 const obj = res.data.map((category) => ({
@@ -35,6 +43,11 @@ const Header = (props) => {
                 setCategories(obj);
             })
             .catch((err) => console.log(err));
+    };
+
+    useEffect(() => {
+        fetchCategories();
+        updateBodyClasses(props);
     }, []);
 
     return (
@@ -104,39 +117,41 @@ const Header = (props) => {
                         </div>
 
                         <div className="bottom2 col-lg-7 col-md-6 col-sm-6">
-                            <div className="search-header-w">
-                                <div className="icon-search hidden-lg hidden-md hidden-sm">
-                                    <i className="fa fa-search"></i></div>
+                            <form action="/search" method="get">
+                                <div className="search-header-w">
+                                    <div className="icon-search hidden-lg hidden-md hidden-sm">
+                                        <i className="fa fa-search"></i></div>
 
-                                <div id="sosearchpro" className="sosearchpro-wrapper so-search ">
+                                    <div id="sosearchpro" className="sosearchpro-wrapper so-search ">
 
-                                    <div id="search0" className="search input-group form-group">
-                                        <div
-                                            className="select_category filter_type  icon-select hidden-sm hidden-xs">
-                                            <select className="no-border" name="category_id"
-                                                    onChange={ (e) => setCategoryId(e.target.value) }>
-                                                <option>All categories</option>
-                                                { categories.map((category) => (
-                                                    <option key={ category.id } id={ category.id }
-                                                            value={ category.id }>
-                                                        { category.name }
-                                                    </option>
-                                                )) }
-                                            </select>
-                                        </div>
-                                        <input className="autosearch-input form-control" type="text"
-                                               value={ searchWord }
-                                               onChange={ (e) => setSearchWord(e.target.value) }
-                                               name="search"/>
-                                        <span className="input-group-btn">
-                                            <button type="button" className="button-search btn btn-primary"
-                                                    name="submit_search" onClick={ onClick }>
+                                        <div id="search0" className="search input-group form-group">
+                                            <div
+                                                className="select_category filter_type  icon-select hidden-sm hidden-xs">
+                                                <select className="no-border" name="categoryId"
+                                                        onChange={ (e) => setCategoryId(e.target.value) }>
+                                                    <option value=''>All categories</option>
+                                                    { categories.map((category) => (
+                                                        <option key={ category.id } id={ category.id }
+                                                                value={ category.id }>
+                                                            { category.name }
+                                                        </option>
+                                                    )) }
+                                                </select>
+                                            </div>
+                                            <input className="autosearch-input form-control" type="text"
+                                                   value={ searchWord }
+                                                   onChange={ (e) => setSearchWord(e.target.value) }
+                                                   name="query"/>
+                                            <span className="input-group-btn">
+                                            <button type="submit" className="button-search btn btn-primary"
+                                                    onClick={ onClick }>
                                                 <i className="fa fa-search"></i>
                                             </button>
                                         </span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            </form>
                         </div>
                         <div className="bottom3 col-lg-3 col-md-3 col-sm-3">
                             <div className="shopping_cart">
@@ -151,7 +166,6 @@ const Header = (props) => {
                                                 <p className="text-shopping-cart">
                                                     My cart
                                                 </p>
-
                                                 <span className="total-shopping-cart cart-total-full">
                                                     <span className="items_cart">02</span><span
                                                     className="items_cart2"> item(s)</span><span

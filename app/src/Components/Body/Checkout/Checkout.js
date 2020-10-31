@@ -112,7 +112,7 @@ const Checkout = () => {
   }
 
   const onChange = (e) => {
-    console.log(e.currentTarget);
+    
   };
 
   const handleSubmit = (e) => {
@@ -126,7 +126,7 @@ const Checkout = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(order),
-    })
+    }) 
     .then(res => res.json())
     .then(res => console.log(res))
     .catch(err => console.log(err));

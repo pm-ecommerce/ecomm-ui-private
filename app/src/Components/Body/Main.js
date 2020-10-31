@@ -24,11 +24,11 @@ const Body = () => {
                 <Route path="/category/:id" component={ CategoryPage }/>
                 <Route path="/search" component={ SearchPage }/>
                 <Route path="/usertype" component={ SelectUserType }/>
-                <Route path="/clogin" component={ UserLogin }/>
-                <Route path="/vlogin" component={ VendorLogin }/>
-                <Route path="/cregister" component={ UserRegister }/>
-                <Route path="/vregister" component={ VendorRegister }/>
-                <Route path="/paymentsuccess" component={ SuccessPage }/>
+                <Route path="/login" component={ UserLogin }/>
+                <Route path="/vendor-login" component={ VendorLogin }/>
+                <Route path="/register" component={ UserRegister }/>
+                <Route path="/vendor-register" component={ VendorRegister }/>
+                <Route path="/payment-success" component={ SuccessPage }/>
                 <Route path="/cart" component={ Cart }/>
                 <Route path="/checkout" component={ Checkout }/>
             </Switch>

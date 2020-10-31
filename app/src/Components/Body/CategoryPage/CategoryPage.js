@@ -16,21 +16,23 @@ const CategoryPage = (props) => {
   const [categories, setCategories] = useState([]);
   const [list, setList] = useState({});
 
-  const fetchProducts = (page = 1) => {
-    const apiUrl = new URL(`${url}/api/categories/products/${category.id}`);
-    const params = {
-      limit: perPage,
-      page,
-    };
+    const fetchProducts = (page = 1) => {
+        console.log('res.data');
+        const apiUrl = new URL(`${ url }/api/categories/products/${ category.id }`);
+        const params = {
+            limit : perPage,
+            page
+        };
 
-    apiUrl.search = new URLSearchParams(params).toString();
-    fetch(apiUrl)
-      .then((res) => res.json())
-      .then((res) => {
-        setList(res.data);
-      })
-      .catch((err) => console.log(err));
-  };
+        apiUrl.search = new URLSearchParams(params).toString();
+        fetch(apiUrl)
+            .then((res) => res.json())
+            .then((res) => {
+                console.log('res.data');
+                setList(res.data);
+            })
+            .catch((err) => console.log('Error' + err));
+    };
 
   const fetchCategory = (id) => {
     fetch(`${url}/api/categories/${state.id}`)
@@ -66,74 +68,55 @@ const CategoryPage = (props) => {
     fetchProducts(page);
   };
 
-  useEffect(() => {
-    fetchProducts(page);
-    fetchCategory(category.id);
-    fetchCategories();
-  }, [props]);
+    useEffect(() => {
+        fetchProducts(page);
+        fetchCategory(category.id);
+        fetchCategories();
+    }, [props]);
 
-  return (
-    <Fragment>
-      <ul className="breadcrumb">
-        <li>
-          <a href="/">
-            <i className="fa fa-home"></i>
-          </a>
-        </li>
-        <li>
-          <Link to={{pathname:`/categories/${category.id}`}}>{category.name}</Link>
-        </li>
-      </ul>
-      <div className="row">
-        <aside className="col-sm-4 col-md-3 content-aside" id="column-left">
-          <div className="module category-style">
-            <h3 className="modtitle">Categories</h3>
-            <div className="modcontent">
-              <div className="box-category">
-                <ul id="cat_accordion" className="list-group">
-                  {categories.map((cat) => {
-                    return (
-                      <li className="" key={cat.id}>
-                        <Link
-                          to={{pathname: `/category/${cat.id}`}}
-                          className="cutom-parent"
-                        >
-                          {cat.name}
-                        </Link>
-                        <span className="dcjq-icon"></span>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
-            </div>
-          </div>
-          <LatestProducts/>
-        </aside>
-        <div id="content" className="col-md-9 col-sm-8">
-          <div className="product-category">
-            <h3 className="title-category ">{category.name}</h3>
-            <div className="product-filter product-filter-top filters-panel">
-              <div className="row">
-                <div className="col-md-5 col-sm-3 col-xs-12 view-mode">
-                  <div className="list-view">
-                    <button
-                      className="btn btn-default grid"
-                      data-view="grid"
-                      data-toggle="tooltip"
-                      data-original-title="Grid"
-                    >
-                      <i className="fa fa-th"></i>
-                    </button>
-                    <button
-                      className="btn btn-default list active"
-                      data-view="list"
-                      data-toggle="tooltip"
-                      data-original-title="List"
-                    >
-                      <i className="fa fa-th-list"></i>
-                    </button>
-                  </div>
+    return (
+        <Fragment>
+            <ul className="breadcrumb">
+                <li><Link to="/"><i className="fa fa-home"></i></Link></li>
+                <li><Link to={ '/categories/' + category.id }>{ category.name }</Link></li>
+            </ul>
+            <div className="row">
+                <aside className="col-sm-4 col-md-3 content-aside" id="column-left">
+                    <div className="module category-style">
+                        <h3 className="modtitle">Categories</h3>
+                        <div className="modcontent">
+                            <div className="box-category">
+                                <ul id="cat_accordion" className="list-group">
+                                    {
+                                        categories.map(cat => {
+                                            return (
+                                                <li className="">
+                                                    <Link to={ `/category/${ cat.id }` }
+                                                       className="cutom-parent">{ cat.name }</Link>
+                                                    <span className="dcjq-icon"></span>
+                                                </li>
+                                            );
+                                        })
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <LatestProducts/>
+                </aside>
+                <div id="content" className="col-md-9 col-sm-8">
+                    <div className="product-category">
+                        <h3 className="title-category ">{ category.name }</h3>
+                        <ProductList list={ list }/>
+                        <div className="pagination-container">
+                            <Pagination
+                                count={ list.totalPages }
+                                variant="outlined"
+                                color="primary"
+                                onChange={ onChange }
+                            />
+                        </div>
+                    </div>
                 </div>
                 <div className="short-by-show form-inline text-right col-md-7 col-sm-9 col-xs-12">
                   <div className="form-group">
@@ -154,7 +137,6 @@ const CategoryPage = (props) => {
                   </div>
                 </div>
               </div>
-            </div>
             <ProductList list={list} />
             <div className="pagination-container">
               <Pagination
@@ -164,9 +146,7 @@ const CategoryPage = (props) => {
                 onChange={onChange}
               />
             </div>
-          </div>
-        </div>
-      </div>
+
     </Fragment>
   );
 };

@@ -7,6 +7,7 @@ import {Provider} from 'react-redux';
 import {createStore} from 'redux';
 import rootReducer from './reducers';
 import Header from './Components/Header/Header';
+import Footer from './Components/Footer/Footer';
 
 const store = createStore(rootReducer);
 
@@ -15,6 +16,7 @@ ReactDOM.render(
         <BrowserRouter>
             <Header/>
             <App/>
+            <Footer/>
         </BrowserRouter>
     </Provider>,
     document.getElementById('root')

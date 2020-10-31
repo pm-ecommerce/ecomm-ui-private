@@ -3,6 +3,7 @@ import ProductList from '../ProductList/ProductList';
 import Pagination from '@material-ui/lab/Pagination';
 import config from '../../../Config';
 import LatestProducts from '../../Common/LatestProducts';
+import {Link} from 'react-router-dom';
 
 const url = `${ config.baseUrl }/pm-search`;
 
@@ -15,6 +16,7 @@ const CategoryPage = (props) => {
     const [list, setList] = useState({});
 
     const fetchProducts = (page = 1) => {
+        console.log('res.data');
         const apiUrl = new URL(`${ url }/api/categories/products/${ category.id }`);
         const params = {
             limit : perPage,
@@ -25,9 +27,10 @@ const CategoryPage = (props) => {
         fetch(apiUrl)
             .then((res) => res.json())
             .then((res) => {
+                console.log('res.data');
                 setList(res.data);
             })
-            .catch((err) => console.log(err));
+            .catch((err) => console.log('Error' + err));
     };
 
     const fetchCategory = (id) => {
@@ -69,13 +72,13 @@ const CategoryPage = (props) => {
         fetchProducts(page);
         fetchCategory(category.id);
         fetchCategories();
-    }, []);
+    }, [props]);
 
     return (
         <Fragment>
             <ul className="breadcrumb">
-                <li><a href="/"><i className="fa fa-home"></i></a></li>
-                <li><a href={ '/categories/' + category.id }>{ category.name }</a></li>
+                <li><Link to="/"><i className="fa fa-home"></i></Link></li>
+                <li><Link to={ '/categories/' + category.id }>{ category.name }</Link></li>
             </ul>
             <div className="row">
                 <aside className="col-sm-4 col-md-3 content-aside" id="column-left">
@@ -88,8 +91,8 @@ const CategoryPage = (props) => {
                                         categories.map(cat => {
                                             return (
                                                 <li className="">
-                                                    <a href={ `/category/${ cat.id }` }
-                                                       className="cutom-parent">{ cat.name }</a>
+                                                    <Link to={ `/category/${ cat.id }` }
+                                                       className="cutom-parent">{ cat.name }</Link>
                                                     <span className="dcjq-icon"></span>
                                                 </li>
                                             );
@@ -104,33 +107,6 @@ const CategoryPage = (props) => {
                 <div id="content" className="col-md-9 col-sm-8">
                     <div className="product-category">
                         <h3 className="title-category ">{ category.name }</h3>
-                        <div className="product-filter product-filter-top filters-panel">
-                            <div className="row">
-                                <div className="col-md-5 col-sm-3 col-xs-12 view-mode">
-                                    <div className="list-view">
-                                        <button className="btn btn-default grid" data-view="grid" data-toggle="tooltip"
-                                                data-original-title="Grid">
-                                            <i className="fa fa-th"></i>
-                                        </button>
-                                        <button className="btn btn-default list active" data-view="list"
-                                                data-toggle="tooltip" data-original-title="List">
-                                            <i className="fa fa-th-list"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div className="short-by-show form-inline text-right col-md-7 col-sm-9 col-xs-12">
-                                    <div className="form-group">
-                                        <label htmlFor="input-limit">Show:</label>
-                                        <select id="input-limit" name="perPage" className="form-control"
-                                                onChange={ e => setItemsPerPage(e) }>
-                                            <option value="20" selected>20</option>
-                                            <option value="50">50</option>
-                                            <option value="100">100</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                         <ProductList list={ list }/>
                         <div className="pagination-container">
                             <Pagination

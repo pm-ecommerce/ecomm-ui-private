@@ -6,7 +6,6 @@ import {withRouter} from 'react-router-dom';
 import config from '../../Config';
 
 const updateBodyClasses = (props) => {
-    console.log(props);
     if (props.location.pathname !== '/') {
         document.body.classList.remove('common-home');
     } else {
@@ -54,9 +53,9 @@ const Header = (props) => {
     return (
         <header id="header" className=" typeheader-1">
             <div className="header-top container">
-                <Link to="/">
+                <Link to={ {pathname : '/'} }>
                     <div id="logo" className="left">
-                        <img src={ Logo } title="ECommerce" alt="Your Store"/>
+                        <img src={ Logo } title="PM Ecommerce" alt="PM Ecommerce"/>
                     </div>
                 </Link>
             </div>
@@ -86,10 +85,9 @@ const Header = (props) => {
                                             </div>
 
                                             <div className="navbar-header">
-                                                <button type="button" id="show-verticalmenu" data-toggle="collapse"
-                                                        className="navbar-toggle">
+                                                <button type="button" id="show-verticalmenu" className="navbar-toggle">
                                                     <i className="fa fa-bars"></i>
-                                                    <span>  All Categories     </span>
+                                                    <span>All Categories</span>
                                                 </button>
                                             </div>
                                             <div className="vertical-wrapper">
@@ -98,12 +96,13 @@ const Header = (props) => {
                                                     <div className="container-mega">
                                                         <ul className="megamenu">
                                                             { categories.map((category) => (
-                                                                <li key={category.id} className="item-vertical hover">
+                                                                <li key={ category.id } className="item-vertical hover">
                                                                     <p className="close-menu"></p>
-                                                                    <a href={ '/category/' + category.id }
-                                                                       className="clearfix">
+                                                                    <Link
+                                                                        to={ `/category/${ category.id }` }
+                                                                        className="clearfix">
                                                                         <span>{ category.name }</span>
-                                                                    </a>
+                                                                    </Link>
                                                                 </li>
                                                             )) }
                                                         </ul>
@@ -114,7 +113,6 @@ const Header = (props) => {
                                     </nav>
                                 </div>
                             </div>
-
                         </div>
 
                         <div className="bottom2 col-lg-7 col-md-6 col-sm-6">
@@ -122,9 +120,7 @@ const Header = (props) => {
                                 <div className="search-header-w">
                                     <div className="icon-search hidden-lg hidden-md hidden-sm">
                                         <i className="fa fa-search"></i></div>
-
-                                    <div id="sosearchpro" className="sosearchpro-wrapper so-search ">
-
+                                    <div id="sosearchpro" className="sosearchpro-wrapper so-search">
                                         <div id="search0" className="search input-group form-group">
                                             <div
                                                 className="select_category filter_type  icon-select hidden-sm hidden-xs">
@@ -158,7 +154,7 @@ const Header = (props) => {
                             <div className="shopping_cart">
                                 <div id="cart" className="btn-shopping-cart">
 
-                                    <a className="btn-group top_cart dropdown-toggle" href={ '/cart' }>
+                                    <Link className="btn-group top_cart dropdown-toggle" to={ {pathname : '/cart'} }>
                                         <div className="shopcart">
                                         <span className="icon-c">
                                             <i className="fa fa-shopping-bag"></i>
@@ -168,13 +164,13 @@ const Header = (props) => {
                                                     My cart
                                                 </p>
                                                 <span className="total-shopping-cart cart-total-full">
-                                                    <span className="items_cart">02</span><span
+                                                    <span className="items_cart">00</span><span
                                                     className="items_cart2"> item(s)</span><span
-                                                    className="items_carts"> - $162.00 </span>
+                                                    className="items_carts"> - $00.00 </span>
                                             </span>
                                             </div>
                                         </div>
-                                    </a>
+                                    </Link>
 
                                 </div>
 

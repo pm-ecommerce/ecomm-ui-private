@@ -3,6 +3,7 @@ import ProductList from '../ProductList/ProductList';
 import Pagination from '@material-ui/lab/Pagination';
 import './SearchPage.css';
 import config from '../../../Config';
+import {Link} from 'react-router-dom';
 
 const SearchPage = (props) => {
     const query = new URLSearchParams(props.location.search);
@@ -45,26 +46,30 @@ const SearchPage = (props) => {
     }, []);
 
     return (
-        <div id="content">
+        <Fragment>
+            <ul className="breadcrumb">
+                <li><Link to="/"><i className="fa fa-home"></i></Link></li>
+                <li><Link to={ '/search'}>Search</Link></li>
+            </ul>
             <div className="row">
-                <div className="product-list-container">
-                    <div className="module">
-                        <h3 className="modtitle">
+                <div id="content">
+                    <div className="product-category">
+                        <h3 className="title-category ">
                             <span>Showing search results for { searchWord }</span>
                         </h3>
+                        <ProductList list={ list }/>
+                        <div className="pagination-container">
+                            <Pagination
+                                count={ list.totalPages }
+                                variant="outlined"
+                                color="primary"
+                                onChange={ onChange }
+                            />
+                        </div>
                     </div>
-                    <ProductList list={ list }/>
-                </div>
-                <div className="pagination-container">
-                    <Pagination
-                        count={ list.totalPages }
-                        variant="outlined"
-                        color="primary"
-                        onChange={ onChange }
-                    />
                 </div>
             </div>
-        </div>
+        </Fragment>
     );
 };
 

@@ -8,7 +8,9 @@ import {Route, Switch} from 'react-router-dom';
 import config from '../../../Config';
 import LatestProducts from '../../Common/LatestProducts';
 
-const url = config.baseUrl;
+// const url = config.baseUrl;
+
+const url = 'http://localhost:8083'
 
 function importAll(r) {
     return r.keys().map(r);
@@ -20,13 +22,13 @@ const DefaultPage = () => {
     const [sections, setSections] = useState([]);
     const [product, setProduct] = useState({});
     useEffect(() => {
-        fetch(`${ url }/pm-search/api/categories/random`)
+        fetch(`${ url }/api/categories/random`)
             .then((res) => res.json())
             .then((res) => {
                 setSections(res.data);
                 res.data.forEach((category) => {
                     const name = category.name;
-                    fetch(`${ url }/pm-search/api/categories/products/${ category.id }`)
+                    fetch(`${ url }/api/categories/products/${ category.id }`)
                         .then((res) => res.json())
                         .then((res) => {
                             setProduct(prevState => ({...prevState, [name] : res.data}));
@@ -67,9 +69,10 @@ const DefaultPage = () => {
 const HomePage = (props) => {
     const [categories, setCategories] = useState([]);
     useEffect(() => {
-        fetch(`${ url }/pm-search/api/categories/`)
+        fetch(`${ url }/api/categories/`)
             .then((res) => res.json())
             .then((res) => {
+                console.log(res);
                 const obj = res.data.map((category, index) => ({
                     name : category.name,
                     id : category.id,

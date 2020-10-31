@@ -1,8 +1,8 @@
 .checkout-page-container{
     width: 90%;
     margin: auto;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    /* display: grid; */
+    /* grid-template-columns: 1fr 1fr; */
     margin-top: 100px;
 }
 

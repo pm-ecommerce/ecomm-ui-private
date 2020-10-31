@@ -3,7 +3,7 @@ import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import "./UserRegister.css";
 
-const url = "http://localhost:8080/pm-accounts/api/users/";
+const url = "http://localhost:8081/api/users/";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;

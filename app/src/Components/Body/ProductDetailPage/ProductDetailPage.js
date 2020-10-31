@@ -7,23 +7,25 @@ import Slider from "@material-ui/core/Slider";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
+import { useParams } from "react-router-dom";
 
 const useStyles = makeStyles({
-    root : {
-        width : 250,
-    },
-    input : {
-        width : 42,
-    },
+  root: {
+    width: 250,
+  },
+  input: {
+    width: 42,
+  },
 });
 
 const ProductDetailPage = (props) => {
+  const { slug } = useParams();
   const [product, setProduct] = useState({ price: 0 });
   const classes = useStyles();
   const [value, setValue] = useState(1);
 
   useEffect(() => {
-    fetch(`http://localhost:8083/api/products/${props.location.slug}`)
+    fetch(`http://localhost:8083/api/products/${slug}`)
       .then((res) => res.json())
       .then((res) => {
         console.log(res, "product page");
@@ -36,17 +38,50 @@ const ProductDetailPage = (props) => {
     setValue(newValue < 1 ? 1 : newValue);
   };
 
-    const handleInputChange = (event) => {
-        setValue(event.target.value === '' ? '' : Number(event.target.value));
-    };
+  const handleInputChange = (event) => {
+    setValue(event.target.value === "" ? "" : Number(event.target.value));
+  };
 
-    const handleBlur = () => {
-        if (value < 1) {
-            setValue(1);
-        } else if (value > 300) {
-            setValue(300);
-        }
+  const handleBlur = () => {
+    if (value < 1) {
+      setValue(1);
+    } else if (value > 300) {
+      setValue(300);
+    }
+  };
+
+  const addToCart = () => {
+    const { sessionId } = JSON.parse(localStorage.getItem("cart"));
+    const { price, id } = product;
+    const data = {
+      quantity: value,
+      productId: id,
+      rate: price,
+      attributes: [],
     };
+    console.log(JSON.stringify(data));
+    fetch(`http://localhost:8084/api/cart/${sessionId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.status === 200) {
+          props.history.push({
+            pathname: "/cart",
+          });
+        }
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const handleSelect = (e) => {
+    const { name, value } = e.target;
+    console.log(name, value);
+  };
 
   return (
     <div className="product-detail-container">
@@ -79,33 +114,30 @@ const ProductDetailPage = (props) => {
           <div className="product-box-desc">
             <div className="inner-box-desc space">
               <div className="price-tax">
-                <span>Ex Tax:</span> ${product.price * value}.00
+                <span>Price:</span> ${product.price * value}.00
               </div>
               <div>
                 <span>Name:</span> {product.name}
-              </div>
-              <div>
-                <span>Status:</span> {product.status}
-              </div>
-              <div>
-                <span>Category:</span>{" "}
-                {product.category ? product.category.name : ""}
               </div>
             </div>
           </div>
           <div className="short_description space">
             <h4>Available Options</h4>
-            <div >
-              {(product.attributes) ? product.attributes.map((attribute) => (
-                <div>
-                    <label>{attribute.name}</label>
-                    <select>
-                        {attribute.options.map(option => (
-                            <option value={option.id}>{option.name} - ${option.price}</option>
+            <div>
+              {product.attributes
+                ? product.attributes.map((attribute) => (
+                    <div>
+                      <label>{attribute.name}</label>
+                      <select onChange={handleSelect}>
+                        {attribute.options.map((option) => (
+                          <option value={option.id} name={option.name}>
+                            {option.name} - ${option.price}
+                          </option>
                         ))}
-                    </select>
-                </div>
-              )) : ''}
+                      </select>
+                    </div>
+                  ))
+                : ""}
             </div>
           </div>
           <Typography id="input-slider" gutterBottom>
@@ -142,7 +174,10 @@ const ProductDetailPage = (props) => {
               backgroundColor: "#ff3c20",
               color: "white",
               border: "none",
+              fontSize: 14,
+              marginTop: 30,
             }}
+            onClick={addToCart}
           >
             Add to Cart
           </Button>
@@ -153,9 +188,9 @@ const ProductDetailPage = (props) => {
         <div className="description-content">
           <p>{product.description}</p>
         </div>
-        </div>
       </div>
-    );
+    </div>
+  );
 };
 
 export default ProductDetailPage;

@@ -3,12 +3,15 @@ import "./UserLogin.css";
 import { Link } from "react-router-dom";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
+import { saveUserInfo } from '../../../actions/index';
+import { useDispatch, useSelector } from "react-redux"; 
 
-const url = "http://localhost:8080/pm-accounts/api/users/login";
+const url = "http://localhost:8081/api/users/login";
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 const UserLogin = () => {
+  const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [popUpMsg, setPopUpMsg] = useState({
     isError: false,
@@ -46,6 +49,8 @@ const UserLogin = () => {
         } else if(response.status === 200) {
           setOpen(true);
           setPopUpMsg({ isError: false, message: "Successful!" });
+          localStorage.setItem('user', JSON.stringify(response.data));
+          // dispatch(saveUserInfo(response.data));
         }
       })
       .catch((err) => {

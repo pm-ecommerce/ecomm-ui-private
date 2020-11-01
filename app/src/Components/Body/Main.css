@@ -91,3 +91,7 @@
 .btn:hover{
     background-color: #ff3c20 !important;
 }
+
+.MuiTypography-body1{
+    width: 100%;
+}

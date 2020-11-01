@@ -1,18 +1,18 @@
 import React from "react";
 import "./SelectUserType.css";
-import { Link } from "react-router-dom";
+import { Link,useParams } from "react-router-dom";
 import { AiOutlineSolution, AiOutlineUserAdd } from "react-icons/ai";
 
-const SelectUserType = (props) => {
-  const { type } = props.location.params;
+const SelectUserType = () => {
+  const { type } = useParams();
   const page = {
     title:
       type === "Register"
         ? `If you already have an account with us, please login at the login page.`
         : "New here? Please register at the register page.",
     link: {
-      customer: type === "Register" ? "cregister" : "clogin",
-      vendor: type === "Register" ? "vregister" : "vlogin",
+      customer: type === "Register" ? "/register" : "/login",
+      vendor: type === "Register" ? "/vendor-register" : "/vendor-login",
     },
   };
   return (

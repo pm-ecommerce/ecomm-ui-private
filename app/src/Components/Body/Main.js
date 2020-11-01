@@ -23,7 +23,7 @@ const Body = () => {
                 <Route path="/products/:slug" component={ ProductDetailPage }/>
                 <Route path="/category/:id" component={ CategoryPage }/>
                 <Route path="/search" component={ SearchPage }/>
-                <Route path="/usertype" component={ SelectUserType }/>
+                <Route path="/usertype/:type" component={ SelectUserType }/>
                 <Route path="/login" component={ UserLogin }/>
                 <Route path="/vendor-login" component={ VendorLogin }/>
                 <Route path="/register" component={ UserRegister }/>

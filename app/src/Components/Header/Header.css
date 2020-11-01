@@ -165,7 +165,7 @@
 }
 
 .header-top{
-    padding: 29px 0 22px 0;
+    padding: 29px 0 22px 0 !important;
 }
 
 .sf-container{

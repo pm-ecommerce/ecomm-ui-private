@@ -6,7 +6,7 @@ const port = 3000;
 
 app.use(express.static(path.join(`${__dirname}/build`)));
 
-app.get('/userType', (req, res) => {
+app.get('/product', (req, res) => {
     res.sendFile(path.join(__dirname + '/public' + '/index.html'));
 })
 

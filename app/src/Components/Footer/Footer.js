@@ -26,7 +26,7 @@ const Header = (props) => {
                 </div>
             </div>
 
-            <div className="footer-bottom ">
+            <div className="footer-bottom">
                 <div className="container">
                     <div className="copyright">
                         PM Ecommerce &copy; { year } PM Shopping Mall. All Rights Reserved.

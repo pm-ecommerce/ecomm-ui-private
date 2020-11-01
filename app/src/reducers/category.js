@@ -1,14 +1,14 @@
 const category = (state = [], action) => {
-    switch(action.type) {
+    switch (action.type) {
         case 'CATEGORIES_RECOVERED':
-            return[
+            return [
                 ...state,
                 ...action.data
-            ]
+            ];
 
         default:
-            return state
+            return state;
     }
-}
+};
 
 export default category;

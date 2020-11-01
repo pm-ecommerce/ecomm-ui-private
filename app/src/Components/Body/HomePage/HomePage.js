@@ -1,16 +1,13 @@
 import React, {useState, useEffect, Fragment} from 'react';
 import './HomePage.css';
 import ProductList from '../ProductList/ProductList';
-import CategoryPage from '../CategoryPage/CategoryPage';
-import SearchPage from '../SearchPage/SearchPage';
-import ProductDetailPage from '../ProductDetailPage/ProductDetailPage';
 import {Route, Switch} from 'react-router-dom';
 import config from '../../../Config';
 import LatestProducts from '../../Common/LatestProducts';
 
 // const url = config.baseUrl;
 
-const url = 'http://localhost:8083'
+const url = config.baseUrl;
 
 function importAll(r) {
     return r.keys().map(r);
@@ -97,10 +94,10 @@ const HomePage = (props) => {
         <div id="content">
             <Switch>
                 <Route exact path="/" component={ DefaultPage }/>
-                {/*<Route exact path="/home" component={ DefaultPage }/>*/}
-                {/*<Route path="/home/category" component={ CategoryPage }/>*/}
-                {/*<Route path="/home/search" component={ SearchPage }/>*/}
-                {/*<Route path="/home/product" component={ ProductDetailPage }/>*/}
+                {/*<Route exact path="/home" component={ DefaultPage }/>*/ }
+                {/*<Route path="/home/category" component={ CategoryPage }/>*/ }
+                {/*<Route path="/home/search" component={ SearchPage }/>*/ }
+                {/*<Route path="/home/product" component={ ProductDetailPage }/>*/ }
             </Switch>
         </div>
     );

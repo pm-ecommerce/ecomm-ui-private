@@ -1,14 +1,16 @@
-body{
+body {
     font-family: 'Roboto', sans-serif;
     -webkit-appearance: none;
     color: #555;
-    font-size: 14px;
+    font-size: 16px;
     line-height: 22px;
 }
 
-textarea, input, select { outline: none; }
+textarea, input, select {
+    outline: none;
+}
 
-h1, h2, h3{
+h1, h2, h3 {
     font-size: 20px;
     font-family: inherit;
     font-weight: 500;
@@ -16,14 +18,14 @@ h1, h2, h3{
     color: #555;
 }
 
-fieldset{
+fieldset {
     min-width: 0;
     padding: 0;
     margin: 0;
     border: 0;
 }
 
-legend{
+legend {
     font-size: 18px;
     padding: 7px 0px;
     display: block;
@@ -36,23 +38,23 @@ legend{
     border-bottom: 1px solid #e5e5e5;
 }
 
-button, input, optgroup, select, textarea{
+button, input, optgroup, select, textarea {
     margin: 0;
     font: inherit;
     color: inherit;
 }
 
-label{
+label {
     font-size: 12px;
     font-weight: normal;
 }
 
-a{
+a {
     text-decoration: none;
     color: inherit;
 }
 
-ul{
+ul {
     padding: 0;
     margin: 0;
     list-style: none;

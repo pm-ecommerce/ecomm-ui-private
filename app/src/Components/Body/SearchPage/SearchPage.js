@@ -43,7 +43,7 @@ const SearchPage = (props) => {
 
     useEffect(() => {
         loadSearch(page);
-    }, []);
+    }, [props]);
 
     return (
         <Fragment>

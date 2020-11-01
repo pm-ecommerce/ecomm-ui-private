@@ -20,7 +20,7 @@ const ProductList = (props) => {
         <div className="products-list row nopadding-xs so-filter-gird grid">
             { props.list && props.list.data
                 ? props.list.data.map((product, index) => (
-                    <div className="product-layout col-lg-15 col-md-4 col-sm-6 col-xs-12">
+                    <div key={index} className="product-layout col-lg-15 col-md-4 col-sm-6 col-xs-12">
                         <div className="product-item-container">
                             <div className="left-block">
                                 <div className="product-image-container second_img">

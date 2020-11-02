@@ -1,0 +1,15 @@
+.dashboard-container{
+    display: grid;
+    place-items: center;
+    min-height: 500px;
+}
+
+.well {
+    background: #fff;
+    min-height: 285px;
+    border: 1px solid #e7e7e7;
+    margin: 0;
+    line-height: 23px;
+    border-radius: 0;
+    padding: 19px;
+}

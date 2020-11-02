@@ -3,8 +3,6 @@ import './UserLogin.css';
 import {Link} from 'react-router-dom';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
-import {saveUserInfo} from '../../../actions/index';
-import {useDispatch, useSelector} from 'react-redux';
 import config from '../../../Config';
 
 const url = 'http://localhost:8081/api/users/login';
@@ -13,8 +11,7 @@ function Alert(props) {
     return <MuiAlert elevation={ 6 } variant="filled" { ...props } />;
 }
 
-const UserLogin = (props) => {
-    const dispatch = useDispatch();
+const UserLogin = () => {
     const [open, setOpen] = useState(false);
     const [popUpMsg, setPopUpMsg] = useState({
         isError : false,

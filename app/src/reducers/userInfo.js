@@ -1,12 +1,14 @@
 const userInfo = (state = {}, action) => {
-    console.log(action, 'action');
-    switch(action.type) {
-        case 'SAVE_USER_INFO':
-            console.log(action.data, 'reducer');
-            return action.data;
-        default: 
-            return state;
-    }
-}
+  switch (action.type) {
+    case "SAVE_USER_INFO":
+      return action.data;
+    case "IS_USER_ONLINE":
+      return state;
+    case "LOG_OUT":
+      return action.data;
+    default:
+      return state;
+  }
+};
 
 export default userInfo;

@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import "./Header.css";
 import Logo from "./img/logo.png";
 import { Link } from "react-router-dom";
 import { withRouter } from "react-router-dom";
 import config from "../../Config";
 import { useDispatch, useSelector } from "react-redux";
-import { updateCartState } from "../../actions";
+import { updateCartState, saveUserInfo, logOut } from "../../actions";
 
 const updateBodyClasses = (props) => {
   if (props.location.pathname !== "/") {
@@ -16,8 +16,12 @@ const updateBodyClasses = (props) => {
 };
 
 const Header = (props) => {
+  const { isOnline } = useSelector((state) => state.userInfo);
   const cart = useSelector((state) => state.cart);
-  const totalRate = (cart.length > 0) ? cart.reduce((acc, cur) => (acc + cur.rate),0) : 0;
+  const totalRate =
+    cart.length > 0
+      ? cart.reduce((acc, cur) => acc + cur.rate * cur.quantity, 0)
+      : 0;
   const query = new URLSearchParams(props.location.search);
   const catId = query.get("categoryId") || 0;
   const queryStr = query.get("query") || "";
@@ -25,6 +29,11 @@ const Header = (props) => {
   const [categories, setCategories] = useState([]);
   const [searchWord, setSearchWord] = useState(queryStr);
   const [categoryId, setCategoryId] = useState(catId);
+
+  const userLogOut = () => {
+    localStorage.removeItem('user');
+    dispatch(logOut());
+  }
 
   const onClick = () => {
     props.history.push({
@@ -67,6 +76,7 @@ const Header = (props) => {
   };
 
   useEffect(() => {
+    dispatch(saveUserInfo(JSON.parse(localStorage.getItem("user"))));
     fetchCategories();
     updateBodyClasses(props);
     fetchSessionId();
@@ -76,8 +86,14 @@ const Header = (props) => {
     <header id="header" className=" typeheader-1">
       <div className="header-top container">
         <div style={{ float: "right" }}>
-          <Link to={{ pathname: "/usertype/Register" }}>Login</Link>{" "}
-          <Link to={{ pathname: "/usertype/Login" }}>Register</Link>
+          {isOnline ? (
+            <span style={{cursor: 'pointer'}} onClick={userLogOut}>Logout</span>
+          ) : (
+            <Fragment>
+              <Link to={{ pathname: "/login" }}>Login</Link>{" "}
+              <Link to={{ pathname: "/register" }}>Register</Link>
+            </Fragment>
+          )}
         </div>
         <Link to={{ pathname: "/" }}>
           <div id="logo" className="left">
@@ -214,7 +230,7 @@ const Header = (props) => {
                       <div className="shopcart-inner">
                         <p className="text-shopping-cart">My cart</p>
                         <span className="total-shopping-cart cart-total-full">
-                          <span className="items_cart">{ cart.length }</span>
+                          <span className="items_cart">{cart.length}</span>
                           <span className="items_cart2"> item(s)</span>
                           <span className="items_carts"> - ${totalRate} </span>
                         </span>

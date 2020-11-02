@@ -5,6 +5,7 @@ import SelectUserType from './UserTypeSelection/SelectUserType';
 import VendorRegister from './VendorRegister/VendorRegister';
 import UserRegister from './UserRegister/UserRegister';
 import SuccessPage from './SuccessPage/SuccessPage';
+import SuccessCheckout from './SuccessCheckout/SuccessCheckout';
 import VendorLogin from './VendorLogin/VendorLogin';
 import UserLogin from './UserLogin/UserLogin';
 import Cart from './Cart/Cart';
@@ -13,6 +14,7 @@ import {Route, Switch} from 'react-router-dom';
 import ProductDetailPage from './ProductDetailPage/ProductDetailPage';
 import CategoryPage from './CategoryPage/CategoryPage';
 import SearchPage from './SearchPage/SearchPage';
+import UserDashBoard from './UserDashBoard/UserDashBoard';
 
 const Body = () => {
 
@@ -29,8 +31,10 @@ const Body = () => {
                 <Route path="/register" component={ UserRegister }/>
                 <Route path="/vendor-register" component={ VendorRegister }/>
                 <Route path="/payment-success" component={ SuccessPage }/>
+                <Route path="/checkout-success" component={ SuccessCheckout }/>
                 <Route path="/cart" component={ Cart }/>
                 <Route path="/checkout" component={ Checkout }/>
+                <Route path="/user-dashboard" component={ UserDashBoard }/>
             </Switch>
         </div>
     );

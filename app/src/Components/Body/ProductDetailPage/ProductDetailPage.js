@@ -8,6 +8,9 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import {useParams} from 'react-router-dom';
+import { useDispatch, useSelector } from "react-redux";
+import { updateCartState } from '../../../actions/index';
+
 import config from '../../../Config';
 
 const useStyles = makeStyles({
@@ -20,6 +23,7 @@ const useStyles = makeStyles({
 });
 
 const ProductDetailPage = (props) => {
+    const dispatch = useDispatch();
     const {slug} = useParams();
     const [product, setProduct] = useState({price : 0, images : [], attributes : []});
     const classes = useStyles();
@@ -74,6 +78,7 @@ const ProductDetailPage = (props) => {
             .then((res) => res.json())
             .then((res) => {
                 if (res.status === 200) {
+                    updateCartState(JSON.parse(localStorage.getItem("cart")), dispatch);
                     props.history.push({
                         pathname : '/cart',
                     });

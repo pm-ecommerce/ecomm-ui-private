@@ -14,6 +14,17 @@ export const saveUserInfo = (userInfo) => {
   };
 };
 
+export const logOut = () => {
+  return {
+    type: "LOG_OUT",
+    data: { isOnline: false },
+  };
+}
+
+export const isUserOnline = () => {
+  return { type: 'IS_USER_ONLINE' }
+}
+
 export const getCartInfo = () => {
   return {
     type: "GET_CART_INFO",

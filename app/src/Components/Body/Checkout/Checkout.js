@@ -5,6 +5,8 @@ import Checkbox from "@material-ui/core/Checkbox";
 import Button from "@material-ui/core/Button";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
+import { useDispatch } from "react-redux";
+import { updateCartState } from '../../../actions/index';
 
 import config from "../../../Config";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -43,7 +45,8 @@ function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-const Checkout = () => {
+const Checkout = (props) => {
+  const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
 
   const [popUpMsg, setPopUpMsg] = useState({
@@ -127,7 +130,7 @@ const Checkout = () => {
   };
 
   const getCartTotal = () => {
-    return getSubTotal() + getTax();
+    return (getSubTotal() + getTax()).toFixed(2);
   };
 
   const onChange = (e, card) => {
@@ -139,26 +142,42 @@ const Checkout = () => {
     }
   };
 
-  const placeOrder = (e) => {
+  const placeOrder = async (e) => {
+    if(items.length === 0) {
+      setOpen(true);
+      setPopUpMsg({
+        isError: true,
+        message: "Cart is empty",
+      });
+      return;
+    }
     const payload = {};
     payload.charges = Object.entries(selectedCards).map((selectedCard) => {
       if (selectedCard[1]) {
         return {
-          amount: parseFloat(cards.find(
-            (card) => Number(card.id) === Number(selectedCard[0])
-          ).amount),
+          amount: parseFloat(
+            cards.find((card) => Number(card.id) === Number(selectedCard[0]))
+              .amount
+          ),
           cardId: selectedCard[0],
         };
       }
     });
-    // console.log(getCartTotal(), payload.charges.reduce((accumlator, charge) => parseFloat(accumlator.amount)+parseFloat(charge.amount)), 'fk');
 
-    if(payload.charges.length === 0 || getCartTotal() !== payload.charges.reduce((accumlator, charge) => parseFloat(accumlator.amount)+parseFloat(charge.amount))) {
-        setOpen(true);
-        setPopUpMsg({ isError: true, message: "Sub total doesn't match with the payment amount"});
-        return;
+    if (
+      payload.charges.length === 0 ||
+      parseFloat(getCartTotal()) !==
+        payload.charges.reduce((acc, cur) => acc + cur.amount, 0)
+    ) {
+      setOpen(true);
+      setPopUpMsg({
+        isError: true,
+        message: "Sub total doesn't match with the payment amount",
+      });
+      return;
     }
-    
+
+    payload.billingAddressId = changeSelectedAddress;
     payload.shippingAddressId = changeSelectedAddress;
     payload.sessionId = user.sessionId;
     console.log("Payload ", payload);
@@ -171,7 +190,37 @@ const Checkout = () => {
       body: JSON.stringify(payload),
     })
       .then((res) => res.json())
-      .then((res) => console.log(res))
+      .then((res) => {
+        if (res.status === 200) {
+          const fetches = [];
+          items.forEach((item) => {
+            fetches.push(
+              fetch(`${config.cartUrl}/api/cart/${user.sessionId}/${item.id}`, {
+                method: "DELETE",
+              })
+                .then((res) => res.json())
+                .then((res) => {
+                  console.log(res);
+                  return res.status;
+                })
+                .catch((err) => {
+                  console.log(err);
+                  return err;
+                })
+            );
+          });
+          Promise.all(fetches).then(function (res) {
+            res.forEach((status) => {
+              if (status !== 200) {
+                console.log("err");
+                return;
+              }
+            });
+            updateCartState(JSON.parse(localStorage.getItem("cart")), dispatch);
+            props.history.push("/payment-success");
+          });
+        }
+      })
       .catch((err) => setPopUpMsg({ isError: true, message: err.message }));
   };
 
@@ -212,6 +261,7 @@ const Checkout = () => {
   const onChangeAddressSelected = (event) => {
     const { value } = event.target;
     setChangeSelectedAddress(Number(value));
+    setAddress(addresses.find((address) => address.id === Number(value)));
   };
 
   const onSaveAddress = async () => {
@@ -350,12 +400,12 @@ const Checkout = () => {
   const saveGuest = async () => {
     try {
       console.log("Sending Request");
-      if (!guest.name) {
-        throw new Error("Please enter your name");
-      }
-      if (!guest.email) {
-        throw new Error("Please enter your email");
-      }
+      // if (!guest.name) {
+      //   throw new Error("Please enter your name");
+      // }
+      // if (!guest.email) {
+      //   throw new Error("Please enter your email");
+      // }
       const res = await fetch(`${config.authUrl}/api/users/guests`, {
         method: "POST",
         headers: {
@@ -364,6 +414,7 @@ const Checkout = () => {
         body: JSON.stringify(guest),
       });
       const response = await res.json();
+      console.log(response);
       if (response.status !== 200) {
         throw new Error(response.message);
       }
@@ -421,7 +472,7 @@ const Checkout = () => {
 
   return !user.userId ? (
     <div>
-      <fieldset id="account">
+      <fieldset id="account" style={{ marginTop: 100 }}>
         <div className="form-group">
           <label className="control-label">Name</label>
           <div className="form-text-input">
@@ -475,15 +526,29 @@ const Checkout = () => {
           address !== null ? (
             !changeAddress ? (
               <div className="form-group" style={{ paddingLeft: 15 }}>
-                <div className="form-text-input">
+                <div className="form-text-input" style={{ width: "100%" }}>
                   {address.address1}, {address.address2} <br />
                   {address.city}, {address.zipcode} <br />
                   {address.state}, {address.country}
                   <br />
                   {addresses.length === 0 ? null : (
-                    <p className="changeAddress" onClick={onChangeAddress}>
+                    // <p className="changeAddress" onClick={onChangeAddress}>
+                    //   Change Address
+                    // </p>
+                    <Button
+                      variant="outlined"
+                      style={{
+                        backgroundColor: "#ff3c20",
+                        color: "white",
+                        border: "none",
+                        fontSize: 14,
+                        float: "left",
+                        marginTop: 30,
+                      }}
+                      onClick={onChangeAddress}
+                    >
                       Change Address
-                    </p>
+                    </Button>
                   )}
                 </div>
               </div>
@@ -517,12 +582,21 @@ const Checkout = () => {
                     ))}
                   </RadioGroup>
                 }
-                <p
-                  className="changeAddress"
+                <Button
+                  variant="outlined"
+                  style={{
+                    backgroundColor: "#ff3c20",
+                    color: "white",
+                    border: "none",
+                    fontSize: 14,
+                    position: "relative",
+                    bottom: 3,
+                    float: "left",
+                  }}
                   onClick={(e) => setChangeAddress(false)}
                 >
                   Done
-                </p>
+                </Button>
               </div>
             )
           ) : null
@@ -681,7 +755,7 @@ const Checkout = () => {
               </div>
             </div>
             <p className="changeAddress" onClick={onBack}>
-                {"< "} Back
+              {"< "} Back
             </p>
             <div className="form-group">
               <Button
@@ -712,6 +786,7 @@ const Checkout = () => {
               fontSize: 14,
               position: "relative",
               bottom: 3,
+              float: "right",
             }}
             onClick={onAddNewAddress}
           >
@@ -892,8 +967,7 @@ const Checkout = () => {
         <Alert
           severity={popUpMsg.isError ? "error" : "success"}
           onClose={handleClose}
-
-          style={{fontSize:16}}
+          style={{ fontSize: 16 }}
         >
           {popUpMsg.message}
         </Alert>

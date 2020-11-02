@@ -8,6 +8,8 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import { makeStyles } from "@material-ui/core/styles";
 import config from "../../../Config";
 import utils from "../../Common/Utils";
+import { useDispatch } from "react-redux";
+import { updateCartState } from "../../../actions/index";
 
 const useStyles = makeStyles((theme) => ({
   margin: {
@@ -19,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Cart = (props) => {
+  const dispatch = useDispatch();
   const classes = useStyles();
   const [items, setItems] = useState([]);
   const [sessionId, setSessionId] = useState();
@@ -36,18 +39,24 @@ const Cart = (props) => {
           body: JSON.stringify(item),
         })
           .then((res) => res.json())
-          .then((res) => {console.log(res); return res.status;})
-          .catch((err) => {console.log(err); return err;})
+          .then((res) => {
+            console.log(res);
+            return res.status;
+          })
+          .catch((err) => {
+            console.log(err);
+            return err;
+          })
       );
     });
-    Promise.all(fetches).then(function(res) {
-      res.forEach(status => {
-        if(status !== 200) {
-          console.log('err');
+    Promise.all(fetches).then(function (res) {
+      res.forEach((status) => {
+        if (status !== 200) {
+          console.log("err");
           return;
         }
-      })
-      props.history.push('/checkout');
+      });
+      props.history.push("/checkout");
     });
   };
 
@@ -58,6 +67,7 @@ const Cart = (props) => {
       .then((res) => res.json())
       .then((res) => {
         if (res.status === 200) {
+          updateCartState(JSON.parse(localStorage.getItem("cart")), dispatch);
           setItems((prevState) =>
             prevState.filter((item) => item.id !== cartItemId)
           );
@@ -76,6 +86,23 @@ const Cart = (props) => {
         return it;
       })
     );
+  };
+
+  const onBlur = (e, item) => {
+    fetch(`${config.cartUrl}/api/cart/${sessionId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(item),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   useEffect(() => {
@@ -125,6 +152,7 @@ const Cart = (props) => {
                       onChange={(e) => updateQuantity(e, item)}
                       value={item.quantity}
                       className="form-control"
+                      onBlur={(e) => onBlur(e, item)}
                     />
                     {/* <p className="changeAddress" style={{textAlign:'center'}}>
                       Save changes

@@ -3,10 +3,11 @@
     place-items: center;
     min-height: 300px;
     margin-top: 100px;
+    min-width: 400px;
 }
 
 .success-page-container .success-card{
-    width: 300px;
+    width: 500px;
     padding: 50px 50px 50px 50px;
     border: solid 1px;
     display: grid;

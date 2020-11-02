@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "./Checkout.css";
-import MuiAlert from "@material-ui/lab/Alert";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import Checkbox from "@material-ui/core/Checkbox";
 import Button from "@material-ui/core/Button";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
 
-import Img from "./img.png";
 import config from "../../../Config";
-import { Link } from "react-router-dom";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
@@ -45,10 +44,12 @@ function Alert(props) {
 }
 
 const Checkout = () => {
-  const shippingAddress = [
-    { name: "Middle Field", id: 1 },
-    { name: "Fairfield", id: 2 },
-  ];
+  const [open, setOpen] = useState(false);
+
+  const [popUpMsg, setPopUpMsg] = useState({
+    isError: false,
+    message: "",
+  });
 
   const getCurrentUser = () => {
     try {
@@ -57,6 +58,15 @@ const Checkout = () => {
       return {};
     }
   };
+
+  const [inputError, setInputError] = useState({
+    name: { error: false, text: "" },
+    phone: { error: false, text: "" },
+    address1: { error: false, text: "" },
+    city: { error: false, text: "" },
+    zipcode: { error: false, text: "" },
+    state: { error: false, text: "" },
+  });
 
   const stripe = useStripe();
   const elements = useElements();
@@ -68,45 +78,38 @@ const Checkout = () => {
   const [selectedCards, setSelectedCards] = useState({});
   const [guest, setGuest] = useState({});
 
-  const [newAddress, setNewAddress] = useState({});
+  const [newAddress, setNewAddress] = useState({
+    name: "",
+    phone: "",
+    address1: "",
+    city: "",
+    zipcode: "",
+    state: "",
+  });
   const [addNewCard, setAddNewCard] = useState(false);
   const [changeAddress, setChangeAddress] = useState(false);
-  const [changeSelectedAddress, setChangeSelectedAddress] = useState(0);
+  const [changeSelectedAddress, setChangeSelectedAddress] = useState();
   const [addNewAddress, setAddNewAddress] = useState(false);
 
-  const [order, setOrder] = useState({
-    shippingAddressId: "1",
-    billingAddressId: "1",
-    sessionId: null,
-    charges: [],
-  });
+  const onBack = () => {
+    setAddNewAddress(false);
+  };
 
-  const handleAddressChange = (e) => {
-    const value = e.target.value;
-    setOrder((prevState) => ({ ...prevState, shippingAddressId: value }));
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
   };
 
   const handlePaymentAmount = (e, cardId) => {
-    const amount = e.target.value;
-    setOrder((prevState) => {
-      if (
-        prevState.charges.some((charge) => charge.cardId === cardId) === false
-      ) {
-        return {
-          ...prevState,
-          charges: [...prevState.charges, { cardId: cardId, amount: amount }],
-        };
-      } else {
-        const newCharges = prevState.charges.map((charge) => {
-          console.log(charge.cardId, cardId, charge, amount);
-          if (charge.cardId === cardId) {
-            return { ...charge, amount: amount };
-          }
-          return charge;
-        });
-        return { ...prevState, charges: newCharges };
-      }
+    let amount = e.target.value;
+    const newAmount = cards.map((card) => {
+      if (card.id === cardId) return { ...card, amount: amount };
+      return card;
     });
+    setCards(newAmount);
   };
 
   const getSubTotal = () => {
@@ -129,44 +132,47 @@ const Checkout = () => {
 
   const onChange = (e, card) => {
     const checked = e.target.checked;
-    const currentTotal = getCartTotal();
-
     if (checked === true) {
-      const totalCards = Object.values(selectedCards).length + 1;
-      selectedCards[card.id] = {
-        cardId: card.id,
-        amount: currentTotal / totalCards,
-      };
-      for (const key in selectedCards) {
-        selectedCards[key].amount = currentTotal / totalCards;
-      }
+      setSelectedCards({ ...selectedCards, [card.id]: true });
     } else {
-      delete selectedCards[card.id];
-
-      const totalCards = Object.values(selectedCards).length;
-      for (const key in selectedCards) {
-        selectedCards[key].amount = currentTotal / totalCards;
-      }
+      setSelectedCards({ ...selectedCards, [card.id]: false });
     }
-    setSelectedCards(selectedCards);
   };
 
   const placeOrder = (e) => {
-      console.log(selectedCards);
-    // const payload = order;
-    // payload.charges = Object.values(selectedCards);
-    // payload.shippingAddressId = address.id;
-    // payload.billingAddressId = address.id;
-    // fetch(`${config.orderUrl}/api/orders`, {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(payload),
-    // })
-    //   .then((res) => res.json())
-    //   .then((res) => console.log(res))
-    //   .catch((err) => console.log(err));
+    const payload = {};
+    payload.charges = Object.entries(selectedCards).map((selectedCard) => {
+      if (selectedCard[1]) {
+        return {
+          amount: parseFloat(cards.find(
+            (card) => Number(card.id) === Number(selectedCard[0])
+          ).amount),
+          cardId: selectedCard[0],
+        };
+      }
+    });
+    // console.log(getCartTotal(), payload.charges.reduce((accumlator, charge) => parseFloat(accumlator.amount)+parseFloat(charge.amount)), 'fk');
+
+    if(payload.charges.length === 0 || getCartTotal() !== payload.charges.reduce((accumlator, charge) => parseFloat(accumlator.amount)+parseFloat(charge.amount))) {
+        setOpen(true);
+        setPopUpMsg({ isError: true, message: "Sub total doesn't match with the payment amount"});
+        return;
+    }
+    
+    payload.shippingAddressId = changeSelectedAddress;
+    payload.sessionId = user.sessionId;
+    console.log("Payload ", payload);
+    console.log("Sending request");
+    fetch(`${config.orderUrl}/api/orders`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    })
+      .then((res) => res.json())
+      .then((res) => console.log(res))
+      .catch((err) => setPopUpMsg({ isError: true, message: err.message }));
   };
 
   const addANewCard = () => {
@@ -181,11 +187,26 @@ const Checkout = () => {
     const { name, value } = event.target;
     newAddress[name] = value;
     setNewAddress(newAddress);
+
+    setInputError((prevState) => {
+      return { ...prevState, [name]: { error: false, text: "" } };
+    });
+  };
+
+  const validateInput = (prop, errorText, type) => {
+    let error = false;
+    console.log(newAddress, newAddress[prop], "Validate");
+    if (type === "isEmpty" && newAddress[prop] === "") error = true;
+    if (error)
+      setInputError((prevState) => {
+        return { ...prevState, [prop]: { error: true, text: errorText } };
+      });
+
+    return { error: error };
   };
 
   const onChangeAddress = (e) => {
     setChangeAddress(true);
-    // setChangeSelectedAddress(address.id);
   };
 
   const onChangeAddressSelected = (event) => {
@@ -195,6 +216,37 @@ const Checkout = () => {
 
   const onSaveAddress = async () => {
     try {
+      let err = false;
+      if (
+        validateInput("name", "Name can't be Empty!", "isEmpty").error === true
+      )
+        err = true;
+      if (
+        validateInput("phone", "Phone number can't be Empty!", "isEmpty")
+          .error === true
+      )
+        err = true;
+      if (
+        validateInput("address1", "Address can't be Empty!", "isEmpty")
+          .error === true
+      )
+        err = true;
+      if (
+        validateInput("city", "City can't be Empty!", "isEmpty").error === true
+      )
+        err = true;
+      if (
+        validateInput("zipcode", "Zipcode can't be Empty!", "isEmpty").error ===
+        true
+      )
+        err = true;
+      if (
+        validateInput("state", "State can't be Empty!", "isEmpty").error ===
+        true
+      )
+        err = true;
+
+      if (err === true) return;
       console.log("Adding addressess");
       const res = await fetch(
         `${config.cartUrl}/api/addresses/${user.userId}`,
@@ -329,7 +381,8 @@ const Checkout = () => {
       .then((res) => res.json())
       .then((res) => {
         console.log(res);
-        setCards(res.data);
+        const cardList = res.data.map((card) => ({ ...card, amount: 0 }));
+        setCards(cardList);
       })
       .catch((err) => console.log(err));
   };
@@ -341,6 +394,8 @@ const Checkout = () => {
         setAddresses(res.data);
         if (res.data.length > 0) {
           setAddress(res.data[0]);
+          setChangeSelectedAddress(res.data[0].id);
+          console.log(res.data, "address");
         } else {
           // show add address form
           onAddNewAddress();
@@ -351,7 +406,6 @@ const Checkout = () => {
 
   useEffect(() => {
     const { sessionId } = JSON.parse(localStorage.getItem("cart"));
-    setOrder((prevState) => ({ ...prevState, sessionId: sessionId }));
     fetch(`${config.cartUrl}/api/cart/${sessionId}`)
       .then((res) => res.json())
       .then((res) => {
@@ -367,11 +421,6 @@ const Checkout = () => {
 
   return !user.userId ? (
     <div>
-      //ask for user's name and email // put a button that says checkout as a
-      guest // when the user fills in the information and click continue // make
-      an api request to 8081/api/users/guests // with payload (name, email) //
-      this api will create a new with no password (guest) // and return a user
-      with (id, name and email)
       <fieldset id="account">
         <div className="form-group">
           <label className="control-label">Name</label>
@@ -432,7 +481,9 @@ const Checkout = () => {
                   {address.state}, {address.country}
                   <br />
                   {addresses.length === 0 ? null : (
-                    <span onClick={onChangeAddress}>change</span>
+                    <p className="changeAddress" onClick={onChangeAddress}>
+                      Change Address
+                    </p>
                   )}
                 </div>
               </div>
@@ -466,6 +517,12 @@ const Checkout = () => {
                     ))}
                   </RadioGroup>
                 }
+                <p
+                  className="changeAddress"
+                  onClick={(e) => setChangeAddress(false)}
+                >
+                  Done
+                </p>
               </div>
             )
           ) : null
@@ -476,39 +533,69 @@ const Checkout = () => {
               <label className="control-label">Name</label>
               <div className="form-text-input">
                 <input
-                  className={`form-control`}
+                  className={`form-control ${
+                    inputError.name.error ? "error-border" : ""
+                  }`}
                   type="text"
                   name="name"
                   placeholder="Full name"
                   value={newAddress.name}
                   onChange={onAddAddressChange}
                 />
+                <span
+                  className="error-span"
+                  style={{
+                    display: inputError.name.error ? "inline" : "none",
+                  }}
+                >
+                  {inputError.name.text}
+                </span>
               </div>
             </div>
             <div className="form-group">
               <label className="control-label">Phone</label>
               <div className="form-text-input">
                 <input
-                  className={`form-control`}
+                  className={`form-control ${
+                    inputError.phone.error ? "error-border" : ""
+                  }`}
                   type="text"
                   name="phone"
                   placeholder="Phone number"
                   value={newAddress.phone}
                   onChange={onAddAddressChange}
                 />
+                <span
+                  className="error-span"
+                  style={{
+                    display: inputError.phone.error ? "inline" : "none",
+                  }}
+                >
+                  {inputError.phone.text}
+                </span>
               </div>
             </div>
             <div className="form-group">
               <label className="control-label">Address 1</label>
               <div className="form-text-input">
                 <input
-                  className={`form-control`}
+                  className={`form-control ${
+                    inputError.address1.error ? "error-border" : ""
+                  }`}
                   type="text"
                   name="address1"
                   placeholder="Address 1"
                   value={newAddress.address1}
                   onChange={onAddAddressChange}
                 />
+                <span
+                  className="error-span"
+                  style={{
+                    display: inputError.address1.error ? "inline" : "none",
+                  }}
+                >
+                  {inputError.address1.text}
+                </span>
               </div>
             </div>
             <div className="form-group">
@@ -528,41 +615,74 @@ const Checkout = () => {
               <label className="control-label">City</label>
               <div className="form-text-input">
                 <input
-                  className={`form-control`}
+                  className={`form-control ${
+                    inputError.city.error ? "error-border" : ""
+                  }`}
                   type="text"
                   name="city"
                   placeholder="City"
                   value={newAddress.city}
                   onChange={onAddAddressChange}
                 />
+                <span
+                  className="error-span"
+                  style={{
+                    display: inputError.city.error ? "inline" : "none",
+                  }}
+                >
+                  {inputError.city.text}
+                </span>
               </div>
             </div>
             <div className="form-group">
               <label className="control-label">Zip code</label>
               <div className="form-text-input">
                 <input
-                  className={`form-control`}
+                  className={`form-control ${
+                    inputError.zipcode.error ? "error-border" : ""
+                  }`}
                   type="text"
                   name="zipcode"
                   placeholder="Zip code"
                   value={newAddress.zipcode}
                   onChange={onAddAddressChange}
                 />
+                <span
+                  className="error-span"
+                  style={{
+                    display: inputError.zipcode.error ? "inline" : "none",
+                  }}
+                >
+                  {inputError.zipcode.text}
+                </span>
               </div>
             </div>
             <div className="form-group">
               <label className="control-label">State</label>
               <div className="form-text-input">
                 <input
-                  className={`form-control`}
+                  className={`form-control ${
+                    inputError.state.error ? "error-border" : ""
+                  }`}
                   type="text"
                   name="state"
                   placeholder="State"
                   value={newAddress.state}
                   onChange={onAddAddressChange}
                 />
+                <span
+                  className="error-span"
+                  style={{
+                    display: inputError.state.error ? "inline" : "none",
+                  }}
+                >
+                  {inputError.state.text}
+                </span>
               </div>
             </div>
+            <p className="changeAddress" onClick={onBack}>
+                {"< "} Back
+            </p>
             <div className="form-group">
               <Button
                 variant="outlined"
@@ -632,8 +752,8 @@ const Checkout = () => {
                       type="text"
                       name="card"
                       placeholder="Enter an amount to charge"
-                    //   value={(selectedCards[card.id]).amount}
-                      onChange={(e) => handlePaymentAmount(e, card)}
+                      value={card.amount}
+                      onChange={(e) => handlePaymentAmount(e, card.id)}
                     />
                   </div>
                 </td>
@@ -768,6 +888,16 @@ const Checkout = () => {
           Place order
         </Button>
       </div>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert
+          severity={popUpMsg.isError ? "error" : "success"}
+          onClose={handleClose}
+
+          style={{fontSize:16}}
+        >
+          {popUpMsg.message}
+        </Alert>
+      </Snackbar>
     </div>
   );
 };

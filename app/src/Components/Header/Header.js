@@ -4,6 +4,8 @@ import Logo from "./img/logo.png";
 import { Link } from "react-router-dom";
 import { withRouter } from "react-router-dom";
 import config from "../../Config";
+import { useDispatch, useSelector } from "react-redux";
+import { updateCartState } from "../../actions";
 
 const updateBodyClasses = (props) => {
   if (props.location.pathname !== "/") {
@@ -14,10 +16,12 @@ const updateBodyClasses = (props) => {
 };
 
 const Header = (props) => {
+  const cart = useSelector((state) => state.cart);
+  const totalRate = (cart.length > 0) ? cart.reduce((acc, cur) => (acc + cur.rate),0) : 0;
   const query = new URLSearchParams(props.location.search);
   const catId = query.get("categoryId") || 0;
   const queryStr = query.get("query") || "";
-
+  const dispatch = useDispatch();
   const [categories, setCategories] = useState([]);
   const [searchWord, setSearchWord] = useState(queryStr);
   const [categoryId, setCategoryId] = useState(catId);
@@ -49,12 +53,16 @@ const Header = (props) => {
     if (localStorage.getItem("cart") === null) {
       fetch(`${config.cartUrl}/api/cart`, {
         method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title: "" }),
       })
         .then((res) => res.json())
         .then((res) => {
           localStorage.setItem("cart", JSON.stringify(res.data));
         })
         .catch((err) => console.log(err));
+    } else {
+      updateCartState(JSON.parse(localStorage.getItem("cart")), dispatch);
     }
   };
 
@@ -67,9 +75,8 @@ const Header = (props) => {
   return (
     <header id="header" className=" typeheader-1">
       <div className="header-top container">
-        <div style={{float:"right"}}>
-          <Link to={{ pathname: "/usertype/Register" }}>Login</Link>
-          {" "}
+        <div style={{ float: "right" }}>
+          <Link to={{ pathname: "/usertype/Register" }}>Login</Link>{" "}
           <Link to={{ pathname: "/usertype/Login" }}>Register</Link>
         </div>
         <Link to={{ pathname: "/" }}>
@@ -207,9 +214,9 @@ const Header = (props) => {
                       <div className="shopcart-inner">
                         <p className="text-shopping-cart">My cart</p>
                         <span className="total-shopping-cart cart-total-full">
-                          <span className="items_cart">00</span>
+                          <span className="items_cart">{ cart.length }</span>
                           <span className="items_cart2"> item(s)</span>
-                          <span className="items_carts"> - $00.00 </span>
+                          <span className="items_carts"> - ${totalRate} </span>
                         </span>
                       </div>
                     </div>

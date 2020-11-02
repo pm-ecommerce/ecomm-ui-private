@@ -124,7 +124,7 @@ const UserRegister = (props) => {
         If you already have an account with us, please login at the login page.
       </p>
       <fieldset id="account">
-        <legend>Customer Details</legend>
+        <legend>User Details</legend>
         <div className="form-group">
           <label className="control-label">Name</label>
           <div className="form-text-input">

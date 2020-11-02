@@ -35,3 +35,13 @@
 .panel-body {
     padding: 15px;
 }
+
+.changeAddress{
+    color:blue;
+    margin-top: 5px;
+    cursor: pointer;
+}
+
+.changeAddress:hover{
+    color: #ff3c20;
+}

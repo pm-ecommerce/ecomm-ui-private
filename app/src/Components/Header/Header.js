@@ -32,6 +32,7 @@ const Header = (props) => {
 
   const userLogOut = () => {
     localStorage.removeItem('user');
+    localStorage.removeItem('userInfo');
     dispatch(logOut());
   }
 
@@ -76,7 +77,9 @@ const Header = (props) => {
   };
 
   useEffect(() => {
-    dispatch(saveUserInfo(JSON.parse(localStorage.getItem("user"))));
+    if(localStorage.getItem('userInfo') !== null) {
+      dispatch(saveUserInfo(JSON.parse(localStorage.getItem('userInfo'))));
+    }
     fetchCategories();
     updateBodyClasses(props);
     fetchSessionId();

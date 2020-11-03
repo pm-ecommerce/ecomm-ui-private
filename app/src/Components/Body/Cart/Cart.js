@@ -26,6 +26,14 @@ const Cart = (props) => {
   const [items, setItems] = useState([]);
   const [sessionId, setSessionId] = useState();
 
+  const getImage = (cartItem) => {
+    if (!cartItem || !cartItem.image) {
+      return "https://place-hold.it/80x80";
+    }
+
+    return `${config.imageUrl}${cartItem.image}`;
+  };
+
   const onSubmit = async () => {
     const fetches = [];
 
@@ -137,7 +145,7 @@ const Cart = (props) => {
               {items.map((item) => (
                 <tr key={item.id}>
                   <td>
-                    <img src={Img} className="cart-item-img" />
+                    <img src={getImage(item)} className="cart-item-img" />
                   </td>
                   <td className="text-field-left">
                     <p>{item.name}</p>

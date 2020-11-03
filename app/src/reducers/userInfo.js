@@ -1,4 +1,4 @@
-const userInfo = (state = {}, action) => {
+const userInfo = (state = {userInfo:{},isOnline:false}, action) => {
   switch (action.type) {
     case "SAVE_USER_INFO":
       return action.data;

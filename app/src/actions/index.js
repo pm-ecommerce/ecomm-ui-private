@@ -3,8 +3,8 @@ import config from "../Config";
 import { useDispatch } from "react-redux";
 
 export const getCategories = () => async (dispatch) => {
-  const response = await fetch("http://localhost:8083/api/categories/");
-  dispatch({ type: "CATEGORIES_RECOVERED", data: response.data });
+  // const response = await fetch("http://localhost:8083/api/categories/");
+  // dispatch({ type: "CATEGORIES_RECOVERED", data: response.data });
 };
 
 export const saveUserInfo = (userInfo) => {

@@ -4,6 +4,8 @@ import {Link} from 'react-router-dom';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import config from '../../../Config';
+import { useDispatch } from "react-redux";
+import { saveUserInfo } from '../../../actions/index';
 
 const url = 'http://localhost:8081/api/users/login';
 
@@ -12,6 +14,7 @@ function Alert(props) {
 }
 
 const UserLogin = () => {
+    const dispatch = useDispatch();
     const [open, setOpen] = useState(false);
     const [popUpMsg, setPopUpMsg] = useState({
         isError : false,
@@ -53,6 +56,7 @@ const UserLogin = () => {
 
     const obtainSessionId = async (user) => {
         const userDetails = await getUserDetails(user);
+        localStorage.setItem('userInfo', JSON.stringify(userDetails));
         const currentCart = getCurrentCart();
         if (currentCart != null && !currentCart.userId) {
             const url = `${ config.cartUrl }/api/cart/${ currentCart.sessionId }/user`;

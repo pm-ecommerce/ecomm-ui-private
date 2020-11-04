@@ -21,20 +21,20 @@ const Body = () => {
     return (
         <div className="main-container container">
             <Switch>
-                <Route exact path="/" component={ HomePage }/>
-                <Route path="/products/:slug" component={ ProductDetailPage }/>
-                <Route path="/category/:id" component={ CategoryPage }/>
-                <Route path="/search" component={ SearchPage }/>
-                <Route path="/usertype/:type" component={ SelectUserType }/>
-                <Route path="/login" component={ UserLogin }/>
-                <Route path="/vendor-login" component={ VendorLogin }/>
-                <Route path="/register" component={ UserRegister }/>
-                <Route path="/vendor-register" component={ VendorRegister }/>
-                <Route path="/paymentsuccess" component={ SuccessPage }/>
-                <Route path="/checkout-success" component={ SuccessCheckout }/>
-                <Route path="/cart" component={ Cart }/>
-                <Route path="/checkout" component={ Checkout }/>
-                <Route path="/dashboard" component={ UserDashBoard }/>
+                <Route exact path="/" component={HomePage}/>
+                <Route path="/products/:slug" component={ProductDetailPage}/>
+                <Route path="/category/:id" component={CategoryPage}/>
+                <Route path="/search" component={SearchPage}/>
+                <Route path="/usertype/:type" component={SelectUserType}/>
+                <Route path="/login" component={UserLogin}/>
+                <Route path="/vendor-login" component={VendorLogin}/>
+                <Route path="/register" component={UserRegister}/>
+                <Route path="/vendor-register" component={VendorRegister}/>
+                <Route path="/paymentsuccess" component={SuccessPage}/>
+                <Route path="/checkout-success" component={SuccessCheckout}/>
+                <Route path="/cart" component={Cart}/>
+                <Route path="/checkout" component={Checkout}/>
+                <Route path="/dashboard" component={UserDashBoard}/>
             </Switch>
         </div>
     );

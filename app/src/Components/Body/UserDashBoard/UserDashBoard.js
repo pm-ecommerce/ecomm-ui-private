@@ -6,8 +6,8 @@ import './UserDashBoard.css';
 
 const UserDashBoard = () => {
     const user = useSelector((state) => state.userInfo);
-    const [completeOrders, setCompleteOrders] = useState({data : []});
-    const [activeOrders, setActiveOrders] = useState({data : []});
+    const [completeOrders, setCompleteOrders] = useState({data: []});
+    const [activeOrders, setActiveOrders] = useState({data: []});
     console.log(user, 'user');
 
     const getImage = (orderItem) => {
@@ -15,13 +15,25 @@ const UserDashBoard = () => {
             return 'https://place-hold.it/80x80';
         }
 
-        return `${ config.imageUrl }${ orderItem.image }`;
+        return `${config.imageUrl}${orderItem.image}`;
+    };
+
+    const getUserInfo = () => {
+        try {
+            if (localStorage.getItem('user')) {
+                return JSON.parse(localStorage.getItem('user')).id;
+            }
+            return JSON.parse(localStorage.getItem("cart")).userId;
+        } catch (e) {
+
+        }
+        return 0;
     };
 
     useEffect(() => {
-        const userInfo = JSON.parse(localStorage.getItem('user'));
+        const userInfo = {id: getUserInfo()};
         console.log(userInfo);
-        fetch(`${ config.orderUrl }/api/orders/users/${ userInfo.id }/complete`)
+        fetch(`${config.orderUrl}/api/orders/users/${userInfo.id}/complete`)
             .then((res) => res.json())
             .then((res) => {
                 if (res.status === 200) {
@@ -31,7 +43,7 @@ const UserDashBoard = () => {
             })
             .catch((err) => console.log(err));
 
-        fetch(`${ config.orderUrl }/api/orders/users/${ userInfo.id }/active`)
+        fetch(`${config.orderUrl}/api/orders/users/${userInfo.id}/active`)
             .then((res) => res.json())
             .then((res) => {
                 if (res.status === 200) {
@@ -57,13 +69,13 @@ const UserDashBoard = () => {
         const dd = obj.getDate();
         const yy = obj.getFullYear();
 
-        return `${ mm < 10 ? '0' + mm : mm }/${ dd < 10 ? '0' + dd : dd }/${ yy }`;
+        return `${mm < 10 ? '0' + mm : mm}/${dd < 10 ? '0' + dd : dd}/${yy}`;
     };
 
     return (
         <div className="dashboard-container">
             <div className="dashboard-box">
-                <div className="well" style={ {border : 'none'} }>
+                <div className="well" style={{border: 'none'}}>
                     {
                         activeOrders.data.map(order => {
                             return (
@@ -80,15 +92,15 @@ const UserDashBoard = () => {
                                         </thead>
                                         <tbody>
                                         <tr>
-                                            <td>{ order.status }</td>
-                                            <td className="text-left" style={ {textAlign : 'left'} }>
-                                                { order.address.address1 }, { order.address.address2 } <br/>
-                                                { order.address.city }, { order.address.zipcode } <br/>
-                                                { order.address.state }, { order.address.country }
+                                            <td>{order.status}</td>
+                                            <td className="text-left" style={{textAlign: 'left'}}>
+                                                {order.address.address1}, {order.address.address2} <br/>
+                                                {order.address.city}, {order.address.zipcode} <br/>
+                                                {order.address.state}, {order.address.country}
                                             </td>
-                                            <td>${ getOrderTotal(order) }</td>
-                                            <td>{ formatDate(order.deliveryDate) }</td>
-                                            <td>{ order.vendor.name }</td>
+                                            <td>${getOrderTotal(order)}</td>
+                                            <td>{formatDate(order.deliveryDate)}</td>
+                                            <td>{order.vendor.name}</td>
                                         </tr>
                                         <tr>
                                             <td colSpan="5">
@@ -103,18 +115,18 @@ const UserDashBoard = () => {
                                                     </tr>
                                                     </thead>
                                                     <tbody>
-                                                    { (order.items || []).map((item) => (
+                                                    {(order.items || []).map((item) => (
                                                         <tr>
                                                             <td>
-                                                                <img src={ getImage(item) } className="cart-item-img"
-                                                                     style={ {width : 80} }/>
+                                                                <img src={getImage(item)} className="cart-item-img"
+                                                                     style={{width: 80}}/>
                                                             </td>
-                                                            <td>{ item.name }</td>
-                                                            <td>${ item.rate }</td>
-                                                            <td>{ item.quantity }</td>
-                                                            <td>${ (item.rate * item.quantity).toFixed(2) }</td>
+                                                            <td>{item.name}</td>
+                                                            <td>${item.rate}</td>
+                                                            <td>{item.quantity}</td>
+                                                            <td>${(item.rate * item.quantity).toFixed(2)}</td>
                                                         </tr>
-                                                    )) }
+                                                    ))}
                                                     </tbody>
                                                 </table>
                                             </td>

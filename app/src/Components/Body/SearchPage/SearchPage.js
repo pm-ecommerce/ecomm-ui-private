@@ -13,7 +13,7 @@ const SearchPage = (props) => {
     const [list, setList] = useState([]);
 
     const loadSearch = (page = 1) => {
-        const url = new URL(`${ config.baseUrl }/pm-search/api/search`);
+        const url = new URL(`${ config.searchUrl }/api/search`);
         const params = {
             limit : 20,
             page

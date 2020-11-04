@@ -30,11 +30,11 @@ const Body = () => {
                 <Route path="/vendor-login" component={ VendorLogin }/>
                 <Route path="/register" component={ UserRegister }/>
                 <Route path="/vendor-register" component={ VendorRegister }/>
-                <Route path="/payment-success" component={ SuccessPage }/>
+                <Route path="/paymentsuccess" component={ SuccessPage }/>
                 <Route path="/checkout-success" component={ SuccessCheckout }/>
                 <Route path="/cart" component={ Cart }/>
                 <Route path="/checkout" component={ Checkout }/>
-                <Route path="/user-dashboard" component={ UserDashBoard }/>
+                <Route path="/dashboard" component={ UserDashBoard }/>
             </Switch>
         </div>
     );

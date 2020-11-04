@@ -31,7 +31,7 @@ const Cart = (props) => {
       return "https://place-hold.it/80x80";
     }
 
-    return `${config.imageUrl}${cartItem.image}`;
+    return `${config.imageUrl}${cartItem.image.name}`;
   };
 
   const onSubmit = async () => {
@@ -144,8 +144,8 @@ const Cart = (props) => {
             <tbody>
               {items.map((item) => (
                 <tr key={item.id}>
-                  <td>
-                    <img src={getImage(item)} className="cart-item-img" />
+                  <td className="text-center">
+                    <img src={getImage(item)} className="cart-item-img" style={{width:80}}/>
                   </td>
                   <td className="text-field-left">
                     <p>{item.name}</p>
@@ -188,19 +188,21 @@ const Cart = (props) => {
               ))}
             </tbody>
           </table>
-        </div>
+        </div>          
         <Button
-          variant="outlined"
-          style={{
-            backgroundColor: "#337ab7",
-            color: "white",
-            border: "none",
-            float: "right",
-          }}
-          onClick={onSubmit}
-        >
-          Continue
-        </Button>
+            variant="outlined"
+            style={{
+              backgroundColor: "#ff3c20",
+              color: "white",
+              border: "none",
+              fontSize: 14,
+              position: "relative",
+              bottom: 3,
+              float: "right",
+            }}
+          onClick={onSubmit}>
+          Continue to checkout
+          </Button>
       </div>
     </div>
   );

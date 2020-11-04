@@ -17,15 +17,15 @@ const updateBodyClasses = (props) => {
 
 const Header = (props) => {
   const { isOnline } = useSelector((state) => state.userInfo);
-  const cart = useSelector((state) => state.cart);
-  const totalRate =
-    cart.length > 0
-      ? cart.reduce((acc, cur) => acc + cur.rate * cur.quantity, 0)
-      : 0;
+
+  const cart = useSelector((state) => state.cart || []);
+  const totalRate = cart && cart.length > 0 ? cart.reduce((acc, cur) => acc + cur.rate * cur.quantity, 0) : 0;
   const query = new URLSearchParams(props.location.search);
   const catId = query.get("categoryId") || 0;
   const queryStr = query.get("query") || "";
+
   const dispatch = useDispatch();
+
   const [categories, setCategories] = useState([]);
   const [searchWord, setSearchWord] = useState(queryStr);
   const [categoryId, setCategoryId] = useState(catId);
@@ -59,12 +59,12 @@ const Header = (props) => {
       .catch((err) => console.log(err));
   };
 
-  const fetchSessionId = () => {
+  const fetchSessionId = (user = {}) => {
     if (localStorage.getItem("cart") === null) {
       fetch(`${config.cartUrl}/api/cart`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title: "" }),
+        body: JSON.stringify({ userId: user.id || 0 }),
       })
         .then((res) => res.json())
         .then((res) => {
@@ -77,12 +77,15 @@ const Header = (props) => {
   };
 
   useEffect(() => {
-    if(localStorage.getItem('userInfo') !== null) {
-      dispatch(saveUserInfo(JSON.parse(localStorage.getItem('userInfo'))));
-    }
     fetchCategories();
     updateBodyClasses(props);
-    fetchSessionId();
+    if(localStorage.getItem('user') !== null) {
+      const user = JSON.parse(localStorage.getItem('user'));
+      dispatch(saveUserInfo(user));
+      fetchSessionId(user); 
+    } else {
+      fetchSessionId(); 
+    }
   }, [props]);
 
   return (

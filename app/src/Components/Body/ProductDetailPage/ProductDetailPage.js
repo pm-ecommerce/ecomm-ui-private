@@ -121,6 +121,22 @@ const ProductDetailPage = (props) => {
     };
 
     return (
+        !product || !product.id 
+        ?
+            <div className="success-page-container">
+              <div className="success-card">
+                <div className="success-logo">
+                  <img src={Image} alt="success" />
+                </div>
+                <div className="scard-text-container">
+                  <h3>OOPS!</h3>
+                  <p>
+                    The product you are trying to view does not exist.
+                  </p>
+                </div>
+              </div>
+            </div> 
+        :
         <div className="product-detail-container">
             <div className="product-detail-box">
                 <div className="product-detail-left">
@@ -159,7 +175,7 @@ const ProductDetailPage = (props) => {
                                 ? product.attributes.map((attribute) => (
                                     <div>
                                         <label>{ attribute.name }</label>
-                                        <select onChange={ (e) => handleSelect(e, attribute) }>
+                                        <select className="form-control" onChange={ (e) => handleSelect(e, attribute) }>
                                             <option value={ 0 }>--select an option--</option>
                                             { attribute.options.map((option) => (
                                                 <option value={ option.id } name={ option.name }>

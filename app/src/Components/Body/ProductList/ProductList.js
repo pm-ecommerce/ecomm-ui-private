@@ -20,7 +20,7 @@ const ProductList = (props) => {
         <div className="products-list row nopadding-xs so-filter-gird grid">
             { props.list && props.list.data
                 ? props.list.data.map((product, index) => (
-                    <Fragment>
+                    <Fragment key={product.slug}>
                         {
                             index > 0 && index % 5 === 0 ? <div className={ 'clearfix' }></div> : null
                         }

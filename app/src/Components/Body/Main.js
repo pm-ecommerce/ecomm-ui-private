@@ -15,6 +15,8 @@ import ProductDetailPage from './ProductDetailPage/ProductDetailPage';
 import CategoryPage from './CategoryPage/CategoryPage';
 import SearchPage from './SearchPage/SearchPage';
 import UserDashBoard from './UserDashBoard/UserDashBoard';
+import withAuth from '../../withAuth';
+
 
 const Body = () => {
 
@@ -34,7 +36,7 @@ const Body = () => {
                 <Route path="/checkout-success" component={SuccessCheckout}/>
                 <Route path="/cart" component={Cart}/>
                 <Route path="/checkout" component={Checkout}/>
-                <Route path="/dashboard" component={UserDashBoard}/>
+                <Route path="/dashboard" component={withAuth(UserDashBoard)}/>
             </Switch>
         </div>
     );

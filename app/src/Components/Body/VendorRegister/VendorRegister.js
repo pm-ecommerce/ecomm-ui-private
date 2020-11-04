@@ -3,7 +3,7 @@ import "./VendorRegister.css";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
-import config from '../../../Config';
+import config from "../../../Config";
 
 const amount = config.registrationPaymentAmount;
 
@@ -39,11 +39,11 @@ function CardSection() {
 }
 
 const VendorRegister = (props) => {
-  const [cursor, setCursor] = useState('');
+  const [cursor, setCursor] = useState("");
   const [open, setOpen] = useState(false);
   const [popUpMsg, setPopUpMsg] = useState({
     isError: false,
-    message: ''
+    message: "",
   });
 
   const stripe = useStripe();
@@ -56,7 +56,6 @@ const VendorRegister = (props) => {
     address2: { error: false, text: "" },
     city: { error: false, text: "" },
     zipcode: { error: false, text: "" },
-    state: { error: false, text: "" },
     card: { error: false, text: "" },
     password: { error: false, text: "" },
     passwordConfirmation: { error: false, text: "" },
@@ -89,6 +88,7 @@ const VendorRegister = (props) => {
       inputName === "zipcode"
         ? e.target.value.replace(/[^0-9.]/g, "")
         : e.target.value;
+    console.log(inputName, value);
     setVendor((prevState) => {
       return { ...prevState, [inputName]: value };
     });
@@ -124,7 +124,7 @@ const VendorRegister = (props) => {
 
   const handleSubmit = async (e) => {
     if (!stripe || !elements) return;
-    setCursor('progress');
+    setCursor("progress");
     const cardElement = elements.getElement(CardElement);
     const { error, token } = await stripe.createToken(cardElement);
     console.log(token);
@@ -145,8 +145,6 @@ const VendorRegister = (props) => {
       err = true;
     if (validateInput("zipcode", "Zip Code can't be Empty!", "isEmpty").error)
       err = true;
-    if (validateInput("state", "State Code can't be Empty!", "isEmpty").error)
-      err = true;
     if (validateInput("password", "Password can't be Empty!", "isEmpty").error)
       err = true;
     if (
@@ -163,7 +161,7 @@ const VendorRegister = (props) => {
       });
     }
 
-    if (err) console.log('');
+    if (err) console.log("");
 
     console.log("Sending Request Please Wait...");
     let accountId = null;
@@ -220,7 +218,7 @@ const VendorRegister = (props) => {
       })
       .then((response) => {
         if (response.status === 200) {
-          setCursor('');
+          setCursor("");
           props.history.push({
             pathname: "/paymentsuccess",
           });
@@ -228,15 +226,15 @@ const VendorRegister = (props) => {
       })
       .catch((error) => {
         console.log("Error : ", error);
-        setPopUpMsg({isError: true, message: error.message});
+        setPopUpMsg({ isError: true, message: error.message });
         setOpen(true);
-        setCursor('');
+        setCursor("");
       });
   };
 
   //account
   return (
-    <div id="vendor-register" style={{cursor: cursor}}>
+    <div id="vendor-register" style={{ cursor: cursor }}>
       <h2>Register Account</h2>
       <p>
         If you already have an account with us, please login at the login page.
@@ -390,22 +388,59 @@ const VendorRegister = (props) => {
         <div className="form-group">
           <label className="control-label">State</label>
           <div className="form-text-input">
-            <input
-              className={`form-control ${
-                inputError.state.error ? "error-border" : ""
-              }`}
-              type="text"
-              name="state"
-              placeholder="State"
-              value={vendor.state}
-              onChange={onChange}
-            />
-            <span
-              className="error-span"
-              style={{ display: inputError.state.error ? "inline" : "none" }}
-            >
-              {inputError.state.text}
-            </span>
+            <select onChange={onChange} name="state" className="form-control">
+              <option value="AL">Alabama</option>
+              <option value="AK">Alaska</option>
+              <option value="AZ">Arizona</option>
+              <option value="AR">Arkansas</option>
+              <option value="CA">California</option>
+              <option value="CO">Colorado</option>
+              <option value="CT">Connecticut</option>
+              <option value="DE">Delaware</option>
+              <option value="DC">District Of Columbia</option>
+              <option value="FL">Florida</option>
+              <option value="GA">Georgia</option>
+              <option value="HI">Hawaii</option>
+              <option value="ID">Idaho</option>
+              <option value="IL">Illinois</option>
+              <option value="IN">Indiana</option>
+              <option value="IA">Iowa</option>
+              <option value="KS">Kansas</option>
+              <option value="KY">Kentucky</option>
+              <option value="LA">Louisiana</option>
+              <option value="ME">Maine</option>
+              <option value="MD">Maryland</option>
+              <option value="MA">Massachusetts</option>
+              <option value="MI">Michigan</option>
+              <option value="MN">Minnesota</option>
+              <option value="MS">Mississippi</option>
+              <option value="MO">Missouri</option>
+              <option value="MT">Montana</option>
+              <option value="NE">Nebraska</option>
+              <option value="NV">Nevada</option>
+              <option value="NH">New Hampshire</option>
+              <option value="NJ">New Jersey</option>
+              <option value="NM">New Mexico</option>
+              <option value="NY">New York</option>
+              <option value="NC">North Carolina</option>
+              <option value="ND">North Dakota</option>
+              <option value="OH">Ohio</option>
+              <option value="OK">Oklahoma</option>
+              <option value="OR">Oregon</option>
+              <option value="PA">Pennsylvania</option>
+              <option value="RI">Rhode Island</option>
+              <option value="SC">South Carolina</option>
+              <option value="SD">South Dakota</option>
+              <option value="TN">Tennessee</option>
+              <option value="TX">Texas</option>
+              <option value="UT">Utah</option>
+              <option value="VT">Vermont</option>
+              <option value="VA">Virginia</option>
+              <option value="WA">Washington</option>
+              <option value="WV">West Virginia</option>
+              <option value="WI">Wisconsin</option>
+              <option value="WY">Wyoming</option>
+            </select>
           </div>
         </div>
       </fieldset>
@@ -422,16 +457,6 @@ const VendorRegister = (props) => {
           <div className="stripe-input-container">
             <CardSection />
           </div>
-          <span
-            className="error-span"
-            style={{
-              display: inputError.state.error ? "inline" : "none",
-              position: "relative",
-              left: 180,
-            }}
-          >
-            {inputError.card.text}
-          </span>
         </div>
       </fieldset>
       <fieldset id="account">
@@ -489,7 +514,10 @@ const VendorRegister = (props) => {
         </div>
       </div>
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-        <Alert severity={popUpMsg.isError ? 'error': 'success'} onClose={handleClose}>
+        <Alert
+          severity={popUpMsg.isError ? "error" : "success"}
+          onClose={handleClose}
+        >
           {popUpMsg.message}
         </Alert>
       </Snackbar>

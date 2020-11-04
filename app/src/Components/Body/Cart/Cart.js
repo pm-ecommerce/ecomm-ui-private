@@ -114,15 +114,20 @@ const Cart = (props) => {
   };
 
   useEffect(() => {
-    const { sessionId } = JSON.parse(localStorage.getItem("cart"));
-    setSessionId(sessionId);
-    fetch(`${config.cartUrl}/api/cart/${sessionId}`)
-      .then((res) => res.json())
-      .then((res) => {
-        setItems(res.data);
-        console.log(res.data);
-      })
-      .catch((err) => console.log(err));
+    if (
+      JSON.parse(localStorage.getItem("cart")) !== null &&
+      JSON.parse(localStorage.getItem("cart")) !== "null"
+    ) {
+      const { sessionId } = JSON.parse(localStorage.getItem("cart"));
+      setSessionId(sessionId);
+      fetch(`${config.cartUrl}/api/cart/${sessionId}`)
+        .then((res) => res.json())
+        .then((res) => {
+          setItems(res.data);
+          console.log(res.data);
+        })
+        .catch((err) => console.log(err));
+    }
   }, []);
 
   return (
@@ -145,7 +150,11 @@ const Cart = (props) => {
               {items.map((item) => (
                 <tr key={item.id}>
                   <td className="text-center">
-                    <img src={getImage(item)} className="cart-item-img" style={{width:80}}/>
+                    <img
+                      src={getImage(item)}
+                      className="cart-item-img"
+                      style={{ width: 80 }}
+                    />
                   </td>
                   <td className="text-field-left">
                     <p>{item.name}</p>
@@ -188,21 +197,22 @@ const Cart = (props) => {
               ))}
             </tbody>
           </table>
-        </div>          
+        </div>
         <Button
-            variant="outlined"
-            style={{
-              backgroundColor: "#ff3c20",
-              color: "white",
-              border: "none",
-              fontSize: 14,
-              position: "relative",
-              bottom: 3,
-              float: "right",
-            }}
-          onClick={onSubmit}>
+          variant="outlined"
+          style={{
+            backgroundColor: "#ff3c20",
+            color: "white",
+            border: "none",
+            fontSize: 14,
+            position: "relative",
+            bottom: 3,
+            float: "right",
+          }}
+          onClick={onSubmit}
+        >
           Continue to checkout
-          </Button>
+        </Button>
       </div>
     </div>
   );

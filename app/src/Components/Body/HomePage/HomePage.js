@@ -5,8 +5,6 @@ import {Route, Switch} from 'react-router-dom';
 import config from '../../../Config';
 import LatestProducts from '../../Common/LatestProducts';
 
-// const url = config.baseUrl;
-
 const url = config.searchUrl;
 
 function importAll(r) {
@@ -80,24 +78,10 @@ const HomePage = (props) => {
             .catch((err) => console.log(err));
     }, []);
 
-    const onClick = (id, name) => {
-        props.history.push({
-            pathname : '/home/category',
-            state : {
-                id : id,
-                name : name
-            },
-        });
-    };
-
     return (
         <div id="content">
             <Switch>
                 <Route exact path="/" component={ DefaultPage }/>
-                {/*<Route exact path="/home" component={ DefaultPage }/>*/ }
-                {/*<Route path="/home/category" component={ CategoryPage }/>*/ }
-                {/*<Route path="/home/search" component={ SearchPage }/>*/ }
-                {/*<Route path="/home/product" component={ ProductDetailPage }/>*/ }
             </Switch>
         </div>
     );

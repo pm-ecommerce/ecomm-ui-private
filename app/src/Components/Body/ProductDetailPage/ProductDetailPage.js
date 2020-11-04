@@ -8,32 +8,32 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import {useParams} from 'react-router-dom';
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch, useSelector} from 'react-redux';
 import {updateCartState} from '../../../actions/index';
 
 import config from '../../../Config';
 
 const useStyles = makeStyles({
-    root: {
-        width: 250,
+    root : {
+        width : 250,
     },
-    input: {
-        width: 42,
+    input : {
+        width : 42,
     },
 });
 
 const ProductDetailPage = (props) => {
     const dispatch = useDispatch();
     const {slug} = useParams();
-    const [product, setProduct] = useState({price: 0, images: [], attributes: []});
+    const [product, setProduct] = useState({price : 0, images : [], attributes : []});
     const classes = useStyles();
     const [value, setValue] = useState(1);
-    const [activeImage, setActiveImage] = useState("");
+    const [activeImage, setActiveImage] = useState('');
     const [attributes, setAttributes] = useState({});
     const [price, setPrice] = useState(0);
 
     useEffect(() => {
-        fetch(`${config.searchUrl}/api/products/${slug}`)
+        fetch(`${ config.searchUrl }/api/products/${ slug }`)
             .then((res) => res.json())
             .then((res) => {
                 if (res.data) {
@@ -65,24 +65,24 @@ const ProductDetailPage = (props) => {
         const {sessionId} = JSON.parse(localStorage.getItem('cart'));
         const {id} = product;
         const data = {
-            quantity: value,
-            productId: id,
-            rate: price,
-            attributes: Object.values(attributes),
+            quantity : value,
+            productId : id,
+            rate : price,
+            attributes : Object.values(attributes),
         };
-        fetch(`${config.cartUrl}/api/cart/${sessionId}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
+        fetch(`${ config.cartUrl }/api/cart/${ sessionId }`, {
+            method : 'POST',
+            headers : {
+                'Content-Type' : 'application/json',
             },
-            body: JSON.stringify(data),
+            body : JSON.stringify(data),
         })
             .then((res) => res.json())
             .then((res) => {
                 if (res.status === 200) {
-                    updateCartState(JSON.parse(localStorage.getItem("cart")), dispatch);
+                    updateCartState(JSON.parse(localStorage.getItem('cart')), dispatch);
                     props.history.push({
-                        pathname: '/cart',
+                        pathname : '/cart',
                     });
                 }
             })
@@ -99,10 +99,10 @@ const ProductDetailPage = (props) => {
         const currentAttrs = attributes;
         if (option && option.id) {
             currentAttrs[attribute.id] = {
-                name: attribute.name,
-                option: {
-                    name: option.name,
-                    price: option.price
+                name : attribute.name,
+                option : {
+                    name : option.name,
+                    price : option.price
                 }
             };
             setAttributes(currentAttrs);
@@ -115,7 +115,7 @@ const ProductDetailPage = (props) => {
             return '/image/catalog/demo/product/270/10.jpg';
         }
 
-        return `${config.imageUrl}${image.name}`;
+        return `${ config.imageUrl }${ image.name }`;
     };
 
     const getFirstImageUrl = (prod) => {
@@ -128,7 +128,7 @@ const ProductDetailPage = (props) => {
             <div className="success-page-container">
                 <div className="success-card">
                     <div className="success-logo">
-                        <img src={Image} alt="success"/>
+                        <img src={ Image } alt="success"/>
                     </div>
                     <div className="scard-text-container">
                         <h3>OOPS!</h3>
@@ -147,8 +147,8 @@ const ProductDetailPage = (props) => {
                                 {
                                     product.images.map(image => {
                                         return (
-                                            <li className="owl-item" onClick={e => setActiveImage(getUrl(image))}>
-                                                <img src={getUrl(image)} style={{width: '100%', height: '100%'}}/>
+                                            <li className="owl-item" onClick={ e => setActiveImage(getUrl(image)) }>
+                                                <img src={ getUrl(image) } style={ {width : '100%', height : '100%'} }/>
                                             </li>
                                         );
                                     })
@@ -156,17 +156,17 @@ const ProductDetailPage = (props) => {
                             </ul>
                         </div>
                         <div className="prodct-detail-img">
-                            <img src={activeImage} className="product-img"/>
+                            <img src={ activeImage } className="product-img"/>
                         </div>
                     </div>
                     <div className="product-detail-right">
                         <div className="product-detail-title">
-                            <h1>{product.name}</h1>
+                            <h1>{ product.name }</h1>
                         </div>
-                        <div className="product-box-desc">
+                        <div className="product-box-desc" style={ {paddingLeft : 0} }>
                             <div className="inner-box-desc space">
                                 <div className="price-tax">
-                                    <span>Price:</span> ${price}
+                                    <span>Price:</span> ${ price }
                                 </div>
                             </div>
                         </div>
@@ -175,64 +175,64 @@ const ProductDetailPage = (props) => {
                                 <div className="short_description space">
                                     <h4>Available Options</h4>
                                     <div>
-                                        {product.attributes
+                                        { product.attributes
                                             ? product.attributes.map((attribute) => (
-                                                <div style={{marginBottom: 15}}>
-                                                    <label style={{fontSize: 16}}>{attribute.name}</label>
+                                                <div style={ {marginBottom : 15} }>
+                                                    <label style={ {fontSize : 16} }>{ attribute.name }</label>
                                                     <select className="form-control"
-                                                            onChange={(e) => handleSelect(e, attribute)}>
-                                                        <option value={0}>--select an option--</option>
-                                                        {attribute.options.map((option) => (
-                                                            <option value={option.id} name={option.name}>
-                                                                {option.name} (+${option.price})
+                                                            onChange={ (e) => handleSelect(e, attribute) }>
+                                                        <option value={ 0 }>--select an option--</option>
+                                                        { attribute.options.map((option) => (
+                                                            <option value={ option.id } name={ option.name }>
+                                                                { option.name } (+${ option.price })
                                                             </option>
-                                                        ))}
+                                                        )) }
                                                     </select>
                                                 </div>
                                             ))
-                                            : ''}
+                                            : '' }
                                     </div>
                                 </div>
                                 : null
                         }
-                        <Typography id="input-slider" gutterBottom style={{fontSize: 16}}>
+                        <Typography id="input-slider" gutterBottom style={ {fontSize : 16} }>
                             Quantity
                         </Typography>
-                        <Grid container spacing={2} alignItems="center">
+                        <Grid container spacing={ 2 } alignItems="center">
                             <Grid item xs>
                                 <Slider
-                                    value={typeof value === 'number' ? value : 1}
-                                    onChange={handleSliderChange}
+                                    value={ typeof value === 'number' ? value : 1 }
+                                    onChange={ handleSliderChange }
                                     aria-labelledby="input-slider"
                                 />
                             </Grid>
                             <Grid item>
                                 <Input
-                                    className={classes.input}
-                                    value={value}
+                                    className={ classes.input }
+                                    value={ value }
                                     margin="dense"
-                                    onChange={handleInputChange}
-                                    onBlur={handleBlur}
-                                    inputProps={{
-                                        step: 1,
-                                        min: 1,
-                                        max: 100,
-                                        type: 'number',
-                                        'aria-labelledby': 'input-slider',
-                                    }}
+                                    onChange={ handleInputChange }
+                                    onBlur={ handleBlur }
+                                    inputProps={ {
+                                        step : 1,
+                                        min : 1,
+                                        max : 100,
+                                        type : 'number',
+                                        'aria-labelledby' : 'input-slider',
+                                    } }
                                 />
                             </Grid>
                         </Grid>
                         <Button
                             variant="outlined"
-                            style={{
-                                backgroundColor: '#ff3c20',
-                                color: 'white',
-                                border: 'none',
-                                fontSize: 14,
-                                marginTop: 30,
-                            }}
-                            onClick={addToCart}
+                            style={ {
+                                backgroundColor : '#ff3c20',
+                                color : 'white',
+                                border : 'none',
+                                fontSize : 14,
+                                marginTop : 30,
+                            } }
+                            onClick={ addToCart }
                         >
                             Add to Cart
                         </Button>
@@ -240,7 +240,7 @@ const ProductDetailPage = (props) => {
                 </div>
                 <div className="description-container">
                     <h1>Description</h1>
-                    <div className="description-content" dangerouslySetInnerHTML={{__html: product.description}}>
+                    <div className="description-content" dangerouslySetInnerHTML={ {__html : product.description} }>
                     </div>
                 </div>
             </div>

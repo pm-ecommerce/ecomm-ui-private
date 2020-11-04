@@ -1,6 +1,6 @@
 const config = {
     baseUrl : 'http://localhost:8080',
-    cartUrl : 'http://localhost:8080/pm-shopping-cart',
+    cartUrl : 'http://localhost:8084',
     authUrl : 'http://localhost:8080/pm-accounts',
     searchUrl : 'http://localhost:8083',
     orderUrl : 'http://localhost:8085',

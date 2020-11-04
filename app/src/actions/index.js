@@ -31,12 +31,17 @@ export const getCartInfo = () => {
     };
 };
 
+export const clearCart = () => {
+    return {type: 'CLEAR_CART', data: {}}
+}
+
 export const updateCartState = (data, dispatch) => {
-    fetch(`${config.cartUrl}/api/cart/${data.sessionId}`)
-        .then((res) => res.json())
-        .then((res) => {
-            const cart = res.data;
-            dispatch({type: 'UPDATE_CART_STATE', data: cart});
-        })
-        .catch((err) => console.log(err));
+    if(data && data.sessionId)
+        fetch(`${config.cartUrl}/api/cart/${data.sessionId}`)
+            .then((res) => res.json())
+            .then((res) => {
+                const cart = res.data;
+                dispatch({type: 'UPDATE_CART_STATE', data: cart});
+            })
+            .catch((err) => console.log(err));
 };

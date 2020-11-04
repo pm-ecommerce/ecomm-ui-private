@@ -5,7 +5,7 @@ import {Link} from "react-router-dom";
 import {withRouter} from "react-router-dom";
 import config from "../../Config";
 import {useDispatch, useSelector} from "react-redux";
-import {updateCartState, saveUserInfo, logOut} from "../../actions";
+import {updateCartState, saveUserInfo, logOut, clearCart} from "../../actions";
 
 const updateBodyClasses = (props) => {
     if (props.location.pathname !== "/") {
@@ -35,6 +35,7 @@ const Header = (props) => {
         localStorage.removeItem('userInfo');
         localStorage.removeItem('cart');
         dispatch(logOut());
+        dispatch(clearCart());
         props.history.push({
             pathname: "/",
         });

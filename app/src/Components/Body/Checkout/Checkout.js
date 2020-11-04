@@ -13,6 +13,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import utils from '../../Common/Utils';
+import emptyCartImg from './cart.png';
 
 const CARD_ELEMENT_OPTIONS = {
     iconStyle : 'solid',
@@ -177,6 +178,7 @@ const Checkout = (props) => {
             return;
         }
 
+        console.log('Yeah');
         payload.billingAddressId = changeSelectedAddress;
         payload.shippingAddressId = changeSelectedAddress;
         payload.sessionId = user.sessionId;
@@ -486,7 +488,7 @@ const Checkout = (props) => {
         <div className="success-page-container">
             <div className="success-card">
                 <div className="success-logo">
-                    <img src={ Image } alt="success"/>
+                    <img src={ emptyCartImg } alt="success"/>
                 </div>
                 <div className="scard-text-container">
                     <h3>OOPS!</h3>

@@ -13,7 +13,7 @@ function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-const UserLogin = () => {
+const UserLogin = (props) => {
     const dispatch = useDispatch();
     const [open, setOpen] = useState(false);
     const [popUpMsg, setPopUpMsg] = useState({
@@ -103,6 +103,9 @@ const UserLogin = () => {
                     setPopUpMsg({isError: false, message: 'Successful!'});
                     localStorage.setItem('user', JSON.stringify(response.data));
                     obtainSessionId(response.data);
+                    props.history.push({
+                        pathname : '/',
+                    });
                 }
             })
             .catch((err) => {

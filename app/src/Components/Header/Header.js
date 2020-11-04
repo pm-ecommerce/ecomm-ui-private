@@ -17,7 +17,6 @@ const updateBodyClasses = (props) => {
 
 const Header = (props) => {
   const { isOnline } = useSelector((state) => state.userInfo);
-
   const cart = useSelector((state) => state.cart || []);
   const totalRate = cart && cart.length > 0 ? cart.reduce((acc, cur) => acc + cur.rate * cur.quantity, 0) : 0;
   const query = new URLSearchParams(props.location.search);
@@ -60,7 +59,7 @@ const Header = (props) => {
   };
 
   const fetchSessionId = (user = {}) => {
-    if (localStorage.getItem("cart") === null) {
+    if (localStorage.getItem("cart") === null || localStorage.getItem("cart") === 'null') {
       fetch(`${config.cartUrl}/api/cart`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -72,7 +71,7 @@ const Header = (props) => {
         })
         .catch((err) => console.log(err));
     } else {
-      updateCartState(JSON.parse(localStorage.getItem("cart")), dispatch);
+        updateCartState(JSON.parse(localStorage.getItem("cart")), dispatch);
     }
   };
 
@@ -228,6 +227,11 @@ const Header = (props) => {
                   <Link
                     className="btn-group top_cart dropdown-toggle"
                     to={{ pathname: "/cart" }}
+                    onClick={(e) => {
+                      if(isOnline === false) {
+                        e.preventDefault();
+                      }
+                    }}
                   >
                     <div className="shopcart">
                       <span className="icon-c">

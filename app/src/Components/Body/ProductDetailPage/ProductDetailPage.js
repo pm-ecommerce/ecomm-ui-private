@@ -8,7 +8,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import {useParams} from 'react-router-dom';
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { updateCartState } from '../../../actions/index';
 
 import config from '../../../Config';
@@ -121,22 +121,6 @@ const ProductDetailPage = (props) => {
     };
 
     return (
-        !product || !product.id 
-        ?
-            <div className="success-page-container">
-              <div className="success-card">
-                <div className="success-logo">
-                  <img src={Image} alt="success" />
-                </div>
-                <div className="scard-text-container">
-                  <h3>OOPS!</h3>
-                  <p>
-                    The product you are trying to view does not exist.
-                  </p>
-                </div>
-              </div>
-            </div> 
-        :
         <div className="product-detail-container">
             <div className="product-detail-box">
                 <div className="product-detail-left">
@@ -145,7 +129,7 @@ const ProductDetailPage = (props) => {
                             {
                                 product.images.map(image => {
                                     return (
-                                        <li className="owl-item">
+                                        <li className="owl-item" key={image}>
                                             <img src={ getUrl(image) } style={ {width : '100%', height : '100%'} }/>
                                         </li>
                                     );
@@ -175,7 +159,7 @@ const ProductDetailPage = (props) => {
                                 ? product.attributes.map((attribute) => (
                                     <div>
                                         <label>{ attribute.name }</label>
-                                        <select className="form-control" onChange={ (e) => handleSelect(e, attribute) }>
+                                        <select onChange={ (e) => handleSelect(e, attribute) }>
                                             <option value={ 0 }>--select an option--</option>
                                             { attribute.options.map((option) => (
                                                 <option value={ option.id } name={ option.name }>

@@ -36,7 +36,7 @@ const LatestProducts = (props) => {
               <div className="item">
                 {products.map((product) => {
                   return (
-                    <div className="product-layout item-inner style1">
+                    <div className="product-layout item-inner style1" key={product.slug}>
                       <div className="item-image">
                         <div className="item-img-info">
                           <Link

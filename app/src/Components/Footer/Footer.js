@@ -1,5 +1,6 @@
 import React, {useEffect} from 'react';
 import {Link, withRouter} from 'react-router-dom';
+import config from '../../Config';
 
 const Header = (props) => {
     const year = new Date().getFullYear();
@@ -17,7 +18,7 @@ const Header = (props) => {
                                 <li><Link to={ {pathname : '/'} }>Home page</Link></li>
                                 <li><Link to={ {pathname : '/login'} }>User login</Link></li>
                                 <li><Link to={ {pathname : '/register'} }>User registration</Link></li>
-                                <li><Link to={ {pathname : '/vendor-login'} }>Business login</Link></li>
+                                <li><a href={config.vendorLoginUrl}>Business login</a></li>
                                 <li><Link to={ {pathname : '/vendor-register'} }>Register your business</Link></li>
                             </ul>
 

@@ -2,10 +2,11 @@ const config = {
     baseUrl : 'http://localhost:8080',
     cartUrl : 'http://localhost:8084',
     authUrl : 'http://localhost:8080/pm-accounts',
-    searchUrl : 'http://localhost:8083',
-    orderUrl : 'http://localhost:8085',
+    searchUrl : 'http://localhost:8080/pm-search',
+    orderUrl : 'http://localhost:8080/pm-orders',
     imageUrl : 'https://localfoodzca.s3.us-west-2.amazonaws.com/',
-    registrationPaymentAmount : 25000.0
+    registrationPaymentAmount : 25000.0,
+    vendorLoginUrl : 'http://localhost:4201/'
 };
 
 export default config;

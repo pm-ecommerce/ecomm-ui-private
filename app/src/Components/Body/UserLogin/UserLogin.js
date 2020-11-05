@@ -4,21 +4,21 @@ import {Link} from 'react-router-dom';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import config from '../../../Config';
-import {useDispatch} from "react-redux";
-import {saveUserInfo} from '../../../actions/index';
+import {useDispatch} from 'react-redux';
+import Button from '@material-ui/core/Button';
 
-const url = 'http://localhost:8081/api/users/login';
+const url = `${ config.authUrl }/api/users/login`;
 
 function Alert(props) {
-    return <MuiAlert elevation={6} variant="filled" {...props} />;
+    return <MuiAlert elevation={ 6 } variant="filled" { ...props } />;
 }
 
 const UserLogin = (props) => {
     const dispatch = useDispatch();
     const [open, setOpen] = useState(false);
     const [popUpMsg, setPopUpMsg] = useState({
-        isError: false,
-        message: '',
+        isError : false,
+        message : '',
     });
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -52,26 +52,26 @@ const UserLogin = (props) => {
         localStorage.setItem('userInfo', JSON.stringify(userDetails));
         const currentCart = getCurrentCart();
         if (currentCart != null && !currentCart.userId) {
-            const url = `${config.cartUrl}/api/cart/${currentCart.sessionId}/user`;
+            const url = `${ config.cartUrl }/api/cart/${ currentCart.sessionId }/user`;
             const res = await fetch(url, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
+                method : 'PATCH',
+                headers : {
+                    'Content-Type' : 'application/json',
                 },
-                body: JSON.stringify({userId: userDetails.id})
+                body : JSON.stringify({userId : userDetails.id})
             });
             const result = await res.json();
             if (result.status === 200) {
                 updateCurrentCart(result.data);
             }
         } else if (currentCart === null) {
-            const url = `${config.cartUrl}/api/cart`;
+            const url = `${ config.cartUrl }/api/cart`;
             const res = await fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
+                method : 'POST',
+                headers : {
+                    'Content-Type' : 'application/json',
                 },
-                body: JSON.stringify({userId: userDetails.id})
+                body : JSON.stringify({userId : userDetails.id})
             });
             const result = await res.json();
             if (result.status === 200) {
@@ -84,23 +84,23 @@ const UserLogin = (props) => {
 
     const onSubmit = () => {
         fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
+            method : 'POST',
+            headers : {
+                'Content-Type' : 'application/json',
             },
-            body: JSON.stringify({
-                email: email,
-                password: password,
+            body : JSON.stringify({
+                email : email,
+                password : password,
             }),
         })
             .then((response) => response.json())
             .then((response) => {
                 if (response.status === 500) {
                     setOpen(true);
-                    setPopUpMsg({isError: true, message: response.message});
+                    setPopUpMsg({isError : true, message : response.message});
                 } else if (response.status === 200) {
                     setOpen(true);
-                    setPopUpMsg({isError: false, message: 'Successful!'});
+                    setPopUpMsg({isError : false, message : 'Successful!'});
                     localStorage.setItem('user', JSON.stringify(response.data));
                     obtainSessionId(response.data);
                     props.history.push({
@@ -110,7 +110,7 @@ const UserLogin = (props) => {
             })
             .catch((err) => {
                 setOpen(true);
-                setPopUpMsg({isError: true, message: err.message});
+                setPopUpMsg({isError : true, message : err.message});
             });
     };
 
@@ -119,7 +119,7 @@ const UserLogin = (props) => {
             <div className="login-card">
                 <div
                     className="lcard-text-container page-login"
-                    style={{marginRight: 30}}
+                    style={ {marginRight : 30} }
                 >
                     <div className="well">
                         <h2>
@@ -145,26 +145,26 @@ const UserLogin = (props) => {
                         <div className="form-group">
                             <label
                                 className="control-label optional"
-                                style={{width: 97, paddingBottom: 4}}
+                                style={ {width : 97, paddingBottom : 4} }
                             >
                                 E-Mail Address
                             </label>
                             <div
                                 className="form-text-input-login"
-                                style={{marginBottom: 30}}
+                                style={ {marginBottom : 30} }
                             >
                                 <input
                                     className="form-control"
                                     name="email"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
+                                    value={ email }
+                                    onChange={ (e) => setEmail(e.target.value) }
                                 ></input>
                             </div>
                         </div>
                         <div className="form-group">
                             <label
                                 className="control-label optional"
-                                style={{paddingLeft: 16, paddingBottom: 4, textAlign: 'left'}}
+                                style={ {paddingLeft : 16, paddingBottom : 4, textAlign : 'left'} }
                             >
                                 Password
                             </label>
@@ -173,25 +173,37 @@ const UserLogin = (props) => {
                                     className="form-control"
                                     type="password"
                                     name="password"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
+                                    value={ password }
+                                    onChange={ (e) => setPassword(e.target.value) }
                                 ></input>
                             </div>
                         </div>
                     </div>
                     <div className="bottom">
-                        <div className="btn" onClick={onSubmit}>
+                        <Button
+                            variant="outlined"
+                            style={ {
+                                backgroundColor : '#ff3c20',
+                                color : 'white',
+                                border : 'none',
+                                fontSize : 14,
+                                position : 'relative',
+                                bottom : 3,
+                                float : 'right',
+                            } }
+                            onClick={ onSubmit }
+                        >
                             Login
-                        </div>
+                        </Button>
                     </div>
                 </div>
             </div>
-            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+            <Snackbar open={ open } autoHideDuration={ 6000 } onClose={ handleClose }>
                 <Alert
-                    severity={popUpMsg.isError ? 'error' : 'success'}
-                    onClose={handleClose}
+                    severity={ popUpMsg.isError ? 'error' : 'success' }
+                    onClose={ handleClose }
                 >
-                    {popUpMsg.message}
+                    { popUpMsg.message }
                 </Alert>
             </Snackbar>
         </div>

@@ -113,7 +113,7 @@ const UserRegister = (props) => {
                 console.log('Response : ', response);
                 if (response.status === 200) {
                     props.history.push({
-                        pathname : '/clogin',
+                        pathname : '/login',
                     });
                 } else {
                     setOpen(true);
